@@ -7,7 +7,7 @@ box-sizing: border-box;
 }
 
 .box {
-  background-color: lightgray;
+  background-color: lavender;
 }
 
 .wrapper {
@@ -34,6 +34,31 @@ box-sizing: border-box;
   border-bottom: 2px dashed blue;
   font-size: 20px;
   text-align: inherit;
+}
+
+.panel {
+  display: block;
+  margin-top: 50px;
+  margin-left: 10px;
+  width: 200px;
+  background-color: #bdbdbd;
+  border: 5px solid #5283c5;
+  border-radius: 10px;
+}
+
+.panel p {
+  font-size: 25px;
+  text-align: center;
+}
+
+.panel button {
+  display: inline-block;
+  font-size: 20px;
+  width: 50%;
+  margin-left: 25%;
+  /*margin-top: 10px;*/
+  margin-bottom: 30px;
+  padding: 10px;
 }
 
 .play-button {
