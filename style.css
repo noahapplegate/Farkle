@@ -6,22 +6,33 @@ box-sizing: border-box;
   box-sizing: inherit;
 }
 
-.box {
-  background-color: lavender;
+body {
+  background-color: #414141;
 }
 
-.wrapper {
-  height: 210px;
+.box {
+  /* background-color: ghostwhite; */
+  background-color: #bdbdbd;
+  border: 5px solid #5283c5;
+  border-radius: 10px;
+}
+
+div.wrapper {
+  height: 200px;
   display: inline-flex;
+}
+
+div.wrapper2 {
+  display: flex;
 }
 
 .score-card {
   width: 200px;
   height: 200px;
   margin: 5px;
-  border: 5px solid black;
+  /*border: 5px solid black;
   border-radius: 10px;
-  padding: 5px;
+  padding: 5px;*/
 
   text-align: center;
 }
@@ -35,14 +46,19 @@ box-sizing: border-box;
   text-align: inherit;
 }
 
+#add-card img {
+  width: 170px;
+  height: 170px
+}
+
 .panel {
   display: block;
   margin-top: 50px;
   margin-left: 10px;
-  width: 350px;
-  background-color: #bdbdbd;
+  width: 375px;
+  /*background-color: #bdbdbd;
   border: 5px solid #5283c5;
-  border-radius: 10px;
+  border-radius: 10px;*/
 }
 
 .panel p {
@@ -58,7 +74,7 @@ box-sizing: border-box;
   font-size: 20px;
   width: 50%;
   margin-left: 25%;
-  margin-bottom: 20px;
+  margin-top: 15px;
   padding: 10px;
 }
 
@@ -82,4 +98,21 @@ box-sizing: border-box;
 
 .play-button:hover {
   background-color: #395a83;
+}
+
+.play-area {
+  display: block;
+  margin-top: 50px;
+  margin-left: 10px;
+  width: 60%;
+  padding: 50px;
+}
+
+.play-area img.play-dice {
+  width: 75px;
+  height: 75px;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 50px;
+  margin-bottom: 50px;
 }

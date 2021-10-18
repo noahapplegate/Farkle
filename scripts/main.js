@@ -36,7 +36,7 @@ addButton.addEventListener('click', () => {
         let newCard = hiddenCards.pop();
         newCard.hidden = false;
         displayedCards.push(newCard);
-        
+
         if (displayedCards.length == MAX_PLAYERS) {
             addCard.hidden = true;
         }
