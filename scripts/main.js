@@ -71,7 +71,7 @@ document.getElementById("die4"),
 document.getElementById("die5"),
 document.getElementById("die6")];
 
-function rollDice(nDice) {
+function rollDice(nDice = 6) {
   /*
   This function takes the number of dice to be rolled as input and then
   picks the values at random and then animates the roll table before
@@ -79,6 +79,11 @@ function rollDice(nDice) {
   in order.
   This function needs access to global array "diceArray"
   */
+  if (!(nDice <= 6 || nDice < 1)) {
+    console.log("ERROR: That is not a valid input");
+    return [0,0,0,0,0,0];
+  }
+
   let timeLimit = 2500; //Animation time in ms
   let interval = 50; //Animation cycle in ms
 
