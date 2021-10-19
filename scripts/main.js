@@ -62,3 +62,35 @@ const removeScoreCard = (event) => {
 removeButtons.forEach((removeButton) => {
     removeButton.addEventListener('click', removeScoreCard);
 })
+
+// Get dice elements in play area and store in array
+const diceArray = [document.getElementById("die1"),
+document.getElementById("die2"),
+document.getElementById("die3"),
+document.getElementById("die4"),
+document.getElementById("die5"),
+document.getElementById("die6")];
+
+//set a function that is makes a delay
+//let rollInterval;
+
+function rollDice(nDice) {
+  for (let i = 0; i < 6; i++) {
+    if (i < nDice) {
+      diceArray.hidden = false;
+    } else {
+      diceArray.hidden = true;
+    }
+  }
+  let rd6 = [0,0,0,0,0,0]; //set up array of null values
+  startTime = Date.now();
+  endTime = startTime + 5000;
+  while (Date.now() < endTime) {
+    for (let ii = 0; ii < nDice; ii++) {
+      rd6[ii] = Math.floor(Math.random()*6 + 1); //pick a random number between 1 and 6
+      diceArray[ii].src = "images/dice-" + rd6[ii] + "-640px.png";
+    }
+  }
+
+  return rd6;
+}
