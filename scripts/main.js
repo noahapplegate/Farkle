@@ -71,26 +71,50 @@ document.getElementById("die4"),
 document.getElementById("die5"),
 document.getElementById("die6")];
 
-//set a function that is makes a delay
-//let rollInterval;
-
 function rollDice(nDice) {
+  /*
+  This function takes the number of dice to be rolled as input and then
+  picks the values at random and then animates the roll table before
+  displaying the final result. This function returns an array of the values
+  in order.
+  This function needs access to global array "diceArray"
+  */
+  let timeLimit = 2500; //Animation time in ms
+  let interval = 50; //Animation cycle in ms
+
   for (let i = 0; i < 6; i++) {
     if (i < nDice) {
-      diceArray.hidden = false;
+      diceArray[i].hidden = false;
     } else {
-      diceArray.hidden = true;
+      diceArray[i].hidden = true;
     }
   }
   let rd6 = [0,0,0,0,0,0]; //set up array of null values
-  startTime = Date.now();
-  endTime = startTime + 5000;
-  while (Date.now() < endTime) {
-    for (let ii = 0; ii < nDice; ii++) {
-      rd6[ii] = Math.floor(Math.random()*6 + 1); //pick a random number between 1 and 6
-      diceArray[ii].src = "images/dice-" + rd6[ii] + "-640px.png";
-    }
+  //Then find final values
+  for (let i = 0; i < nDice; i++) {
+    rd6[i] = Math.floor(Math.random()*6 + 1); //pick a random number between 1 and 6
   }
+
+  //Animate rolls for a certain amount of time
+  endTime = Date.now() + timeLimit;
+  let animation = setInterval(function() {
+    let rd6Animate = [0,0,0,0,0,0];
+    for (let i = 0; i < nDice; i++) {
+      rd6Animate[i] = Math.floor(Math.random()*6 + 1); //pick a random number between 1 and 6
+      diceArray[i].src = "images/dice-" + rd6Animate[i] + "-640px.png";
+    }
+
+    if (Date.now() > endTime) {
+      clearInterval(animation);
+    }
+  },50);
+
+  //After animation is done, display the final values
+  let finishAnimate = setTimeout(function() {
+    for (let i = 0; i < nDice; i++) {
+      diceArray[i].src = "images/dice-" + rd6[i] + "-640px.png";
+    }
+  },(timeLimit + interval));
 
   return rd6;
 }
