@@ -88,8 +88,6 @@ div.wrapper2 {
   gap: 10%;
 }
 
-
-
 .panel .row {
   display: inline-block;
   height: 60px;
@@ -103,21 +101,32 @@ div.wrapper2 {
   margin-left: 5px;
 }
 
-.play-button {
+.sidebar-button {
   color: white;
   background-color: #bd5a4a;
 }
 
-.play-button:hover {
+.sidebar-button:hover {
   background-color: #395a83;
 }
 
 .play-area {
-  display: block;
+  display: inline;
   margin-top: 50px;
   margin-left: 10px;
   width: 60%;
   padding: 50px;
+}
+
+.play-area div.play-dice {
+  /*position: relative;
+  width: 75px;
+  height: 75px;
+  background-color: white;
+  border-radius: 10px;
+  margin-right: 50px;
+  margin-bottom: 50px;*/
+  display: inline-block;
 }
 
 .play-area img.play-dice {
@@ -127,4 +136,13 @@ div.wrapper2 {
   border-radius: 10px;
   margin-right: 50px;
   margin-bottom: 50px;
+}
+
+.play-area button.play-dice {
+  position: absolute;
+  background-color: transparent;
+  width: 75px;
+  height: 75px;
+  border: none;
+  cursor: pointer;
 }

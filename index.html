@@ -36,21 +36,19 @@
       <!-- Left Panel -->
       <div class="box panel">
         <div class="sub-wrapper">
-          <button class="play-button" id="roll-button" type="button">
+          <button class="sidebar-button" id="roll-button" type="button">
             Roll
           </button>
-          <button class="play-button" id="roll-prev-button" type="button">
+          <button class="sidebar-button" id="roll-prev-button" type="button">
             Roll prev.
           </button>
         </div>
-        <button class="play-button" id="bank-button" type="button">
+        <button class="sidebar-button" id="bank-button" type="button">
           Bank
         </button>
         <p id="round-score">Score this turn: </p>
         <hr>
-        <!--This is a test of what will be in a row-->
-        <div class="row" id="row1">
-        </div>
+        <div class="row" id="row1"></div>
         <hr>
         <div class="row" id="row2"></div>
         <hr>
@@ -66,7 +64,11 @@
       <!-- Play Area -->
       <div class="box play-area">
         <p id="play-text">Test</p>
-        <img class="play-dice" id="die1" src="images/dice-1-640px.png" />
+        <div class="play-dice">
+          <button class="play-dice" id="die1-button"></button>
+          <img class="play-dice" id="die1" src="images/dice-1-640px.png" />
+        </div>
+
         <img class="play-dice" id="die2" src="images/dice-2-640px.png" />
         <img class="play-dice" id="die3" src="images/dice-3-640px.png" />
         <img class="play-dice" id="die4" src="images/dice-4-640px.png" />

@@ -63,6 +63,16 @@ removeButtons.forEach((removeButton) => {
     removeButton.addEventListener('click', removeScoreCard);
 })
 
+// get buttons for playing Farkle
+const rollB = document.getElementById("roll-button")
+const rollPrevB = document.getElementById("roll-prev-button")
+const bankB = document.getElementById("bank-button")
+
+// Event listener and handler for clicking roll button
+rollB.addEventListener('click', () => {
+    
+});
+
 // Get dice elements in play area and store in array
 const diceArray = [document.getElementById("die1"),
 document.getElementById("die2"),
