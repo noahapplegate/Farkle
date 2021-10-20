@@ -68,11 +68,6 @@ const rollB = document.getElementById("roll-button")
 const rollPrevB = document.getElementById("roll-prev-button")
 const bankB = document.getElementById("bank-button")
 
-// Event listener and handler for clicking roll button
-rollB.addEventListener('click', () => {
-    
-});
-
 // Get dice elements in play area and store in array
 const diceArray = [document.getElementById("die1"),
 document.getElementById("die2"),
@@ -81,13 +76,27 @@ document.getElementById("die4"),
 document.getElementById("die5"),
 document.getElementById("die6")];
 
+const diceBArray = [document.getElementById("play-b-1"),
+document.getElementById("play-b-2"),
+document.getElementById("play-b-3"),
+document.getElementById("play-b-4"),
+document.getElementById("play-b-5"),
+document.getElementById("play-b-6")];
+
+// Event listener and handler for clicking roll button
+rollB.addEventListener('click', () => {
+
+});
+
+
 function rollDice(nDice = 6) {
   /*
   This function takes the number of dice to be rolled as input and then
   picks the values at random and then animates the roll table before
   displaying the final result. This function returns an array of the values
-  in order.
-  This function needs access to global array "diceArray"
+  in order. It also temporarily hides the buttons and then reveals them
+  after the animation is done
+  This function needs access to global arrays "diceArray" and "diceBArray"
   */
   if (!(nDice <= 6 || nDice < 1)) {
     console.log("ERROR: That is not a valid input");
@@ -103,6 +112,8 @@ function rollDice(nDice = 6) {
     } else {
       diceArray[i].hidden = true;
     }
+
+    diceBArray[i].hidden = true; //Temporarily hide all buttons in play area
   }
   let rd6 = [0,0,0,0,0,0]; //set up array of null values
   //Then find final values
@@ -124,10 +135,11 @@ function rollDice(nDice = 6) {
     }
   },50);
 
-  //After animation is done, display the final values
+  //After animation is done, display the final values and reveal buttons
   let finishAnimate = setTimeout(function() {
     for (let i = 0; i < nDice; i++) {
       diceArray[i].src = "images/dice-" + rd6[i] + "-640px.png";
+      diceBArray[i].hidden = false; //reveal play buttons.
     }
   },(timeLimit + interval));
 
