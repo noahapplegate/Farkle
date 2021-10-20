@@ -72,11 +72,23 @@ div.wrapper2 {
 .panel button {
   display: inline-block;
   font-size: 20px;
-  width: 50%;
-  margin-left: 25%;
   margin-top: 15px;
   padding: 10px;
 }
+
+.panel > button {
+  width: 40%;
+  margin-left: 30%;
+}
+
+.panel .sub-wrapper {
+  display: grid;
+  margin-left: 10%;
+  grid-template-columns: 40% 40%;
+  gap: 10%;
+}
+
+
 
 .panel .row {
   display: inline-block;
