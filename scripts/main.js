@@ -63,49 +63,140 @@ removeButtons.forEach((removeButton) => {
     removeButton.addEventListener('click', removeScoreCard);
 })
 
+const timeLimit = 2500; //Animation time in ms
+const interval = 50; //Animation cycle in ms
+
 // get buttons for playing Farkle
-const rollB = document.getElementById("roll-button")
-const rollPrevB = document.getElementById("roll-prev-button")
-const bankB = document.getElementById("bank-button")
+const rollB = document.getElementById("roll-button");
+const rollPrevB = document.getElementById("roll-prev-button");
+const bankB = document.getElementById("bank-button");
+
+//get text elements to change
+const roundScore = document.getElementById("round-score");
+const playText = document.getElementById("play-text");
 
 // Get dice elements in play area and store in array
 const diceArray = [document.getElementById("die1"),
-document.getElementById("die2"),
-document.getElementById("die3"),
-document.getElementById("die4"),
-document.getElementById("die5"),
-document.getElementById("die6")];
+  document.getElementById("die2"),
+  document.getElementById("die3"),
+  document.getElementById("die4"),
+  document.getElementById("die5"),
+  document.getElementById("die6")];
 
 const diceBArray = [document.getElementById("play-b-1"),
-document.getElementById("play-b-2"),
-document.getElementById("play-b-3"),
-document.getElementById("play-b-4"),
-document.getElementById("play-b-5"),
-document.getElementById("play-b-6")];
+  document.getElementById("play-b-2"),
+  document.getElementById("play-b-3"),
+  document.getElementById("play-b-4"),
+  document.getElementById("play-b-5"),
+  document.getElementById("play-b-6")];
+
+//get dice elements in rows in the panel/sidebar
+const row1Array = [document.getElementById("row1-img-1"),
+  document.getElementById("row1-img-2"),
+  document.getElementById("row1-img-3"),
+  document.getElementById("row1-img-4"),
+  document.getElementById("row1-img-5"),
+  document.getElementById("row1-img-6")];
+
+const row1BArray = [document.getElementById("row1-b-1"),
+  document.getElementById("row1-b-2"),
+  document.getElementById("row1-b-3"),
+  document.getElementById("row1-b-4"),
+  document.getElementById("row1-b-5"),
+  document.getElementById("row1-b-6")];
+
+const row2Array = [document.getElementById("row2-img-1"),
+  document.getElementById("row2-img-2"),
+  document.getElementById("row2-img-3"),
+  document.getElementById("row2-img-4"),
+  document.getElementById("row2-img-5"),
+  document.getElementById("row2-img-6")];
+
+const row2BArray = [document.getElementById("row2-b-1"),
+  document.getElementById("row2-b-2"),
+  document.getElementById("row2-b-3"),
+  document.getElementById("row2-b-4"),
+  document.getElementById("row2-b-5"),
+  document.getElementById("row2-b-6")];
+
+//Hide all images and buttons in rows on webpage load
+for (let i = 0; i < 6; i++) {
+  row1Array[i].hidden = true;
+  row1BArray[i].hidden = true;
+  row2Array[i].hidden = true;
+  row2BArray[i].hidden = true;
+}
+
+//create variables to track turn
+let dicePlay = [1,2,3,4,5,6]; //Dice in play
+let nDicePlay = 6;// number of dice in play
+let diceRow1 = [0,0,0,0,0,0];
+let nDiceRow1 = 0;
+let diceRow2 = [0,0,0,0,0,0];
+let nDiceRow2 = 0;
+let prevDice = [0,0,0,0,0,0];
 
 // Event listener and handler for clicking roll button
 rollB.addEventListener('click', () => {
-  console.log(checkScore(rollDice()));
+  dicePlay = rollDice(nDicePlay);
+  let rollResults = checkScore(dicePlay);
+  let nResults = rollResults.length;
+  let rollResultsTitles = [];
+  for (let i = 0; i < nResults; i++) {
+    rollResultsTitles.push(rollResults[i][0]);
+  }
+
+  const farkleString = "Farkle! Your roll has no combinations!";
+  const resultsString = "Your highest value combinations are: ";
+
+  if (rollResults[0][1] == 0) {
+    playText.textContent = resultsString;
+    let finishAnimate = setTimeout(function() {
+      playText.textContent = farkleString;
+    },(timeLimit + interval));
+  } else {
+    playText.textContent = resultsString;
+    let finishAnimate = setTimeout(function() {
+      playText.textContent = resultsString + rollResultsTitles.join(", ");
+    },(timeLimit + interval));
+  }
+});
+
+diceBArray[0].addEventListener('click', () => {
+  playBClick(0);
 });
 
 const scoreTable = {
   farkle: ["farkle", 0],
   one: ["1", 100], //0
   five: ["5", 50], //1
-  three1s: ["three 1s", 1000],
-  three2s: ["three 2s", 200],
-  three3s: ["three 3s", 300],
-  three4s: ["three 4s", 400],
-  three5s: ["three 5s", 500],
-  three6s: ["three 6s", 600],
-  fourKind: ["four of a kind", 1000],
-  fiveKind: ["five of a kind", 2000],
-  sixKind: ["six of a kind", 3000],
-  straight: ["straight", 1500],
-  threePairs: ["three pairs", 1500],
-  fourKindPair: ["four of kind + pair", 1500],
-  twoTriplets: ["two triplets", 2500]
+  three1s: ["1-1-1", 1000],
+  three2s: ["2-2-2", 200],
+  three3s: ["3-3-3", 300],
+  three4s: ["4-4-4", 400],
+  three5s: ["5-5-5", 500],
+  three6s: ["6-6-6", 600],
+  fourKind: ["Four-of-a-kind", 1000],
+  fiveKind: ["Five-of-a-kind", 2000],
+  sixKind: ["Six-of-a-kind", 3000],
+  straight: ["Straight", 1500],
+  threePairs: ["Three pairs", 1500],
+  fourKindPair: ["Four-of-a-kind + pair", 1500],
+  twoTriplets: ["Two triplets", 2500]
 };
+
+function playBClick(selectedB) {
+  diceBArray[selectedB].hidden = true;
+  diceArray[selectedB].hidden = true;
+  nDicePlay-= 1; //subtract a dice in play
+
+  let value = dicePlay[selectedB];
+  row2Array[nDiceRow2].src = "images/dice-" + value + "-640px.png";
+  row2Array[nDiceRow2].hidden = false;
+  row2BArray[nDiceRow2].hidden = false;
+
+  nDiceRow2+= 1;
+}
 
 function checkScore(d6Array) {
   /*
@@ -232,14 +323,12 @@ function rollDice(nDice = 6) {
   in order. It also temporarily hides the buttons and then reveals them
   after the animation is done
   This function needs access to global arrays "diceArray" and "diceBArray"
+  and constants timeLimit and interval
   */
   if (!(nDice <= 6 || nDice < 1)) {
     console.log("ERROR: That is not a valid input");
     return [0,0,0,0,0,0];
   }
-
-  let timeLimit = 2500; //Animation time in ms
-  let interval = 50; //Animation cycle in ms
 
   for (let i = 0; i < 6; i++) {
     if (i < nDice) {
