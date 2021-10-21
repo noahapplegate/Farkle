@@ -165,6 +165,13 @@ diceBArray[3].addEventListener('click', () => {playBClick(3);});
 diceBArray[4].addEventListener('click', () => {playBClick(4);});
 diceBArray[5].addEventListener('click', () => {playBClick(5);});
 
+row2BArray[0].addEventListener('click', () => {row2BClick(0);});
+row2BArray[1].addEventListener('click', () => {row2BClick(1);});
+row2BArray[2].addEventListener('click', () => {row2BClick(2);});
+row2BArray[3].addEventListener('click', () => {row2BClick(3);});
+row2BArray[4].addEventListener('click', () => {row2BClick(4);});
+row2BArray[5].addEventListener('click', () => {row2BClick(5);});
+
 const scoreTable = {
   farkle: ["farkle", 0],
   one: ["1", 100],
@@ -187,16 +194,27 @@ const scoreTable = {
 function playBClick(selectedB) {
   let value = dicePlay[selectedB];
 
-  row2Array[nDiceRow2].src = "images/dice-" + value + "-640px.png";
-  row2Array[nDiceRow2].hidden = false;
-  row2BArray[nDiceRow2].hidden = false;
   diceRow2[nDiceRow2] = value;
+  diceRow2 = updateDiceRow2(diceRow2);
 
   dicePlay[selectedB] = 0;
   dicePlay = updateDicePlay(dicePlay);
-  nDicePlay -= 1; //subtract a dice in play
 
+  nDicePlay -= 1;
   nDiceRow2 += 1;
+}
+
+function row2BClick(selectedB) {
+  let value = diceRow2[selectedB];
+
+  dicePlay[nDicePlay] = value;
+  dicePlay = updateDicePlay(dicePlay);
+
+  diceRow2[selectedB] = 0;
+  diceRow2 = updateDiceRow2(diceRow2);
+
+  nDicePlay += 1;
+  nDiceRow2 -= 1;
 }
 
 function updateDicePlay(d6Array) {
@@ -212,7 +230,22 @@ function updateDicePlay(d6Array) {
     diceArray[i].hidden = false;
     diceBArray[i].hidden = false;
   }
+  return newArray;
+}
 
+function updateDiceRow2(d6Array) {
+  newArray = d6Array.filter(value => value > 0); //remove zero values
+  for (let i = 0; i < 6; i++) {
+    if (!newArray[i]) {
+      newArray.push(0) //append 0's if they were removed
+      row2Array[i].hidden = true;
+      row2BArray[i].hidden = true;
+      continue;
+    }
+    row2Array[i].src = "images/dice-" + newArray[i] + "-640px.png";
+    row2Array[i].hidden = false;
+    row2BArray[i].hidden = false;
+  }
   return newArray;
 }
 
