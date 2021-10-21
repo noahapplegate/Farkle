@@ -140,11 +140,7 @@ let prevDice = [0,0,0,0,0,0];
 rollB.addEventListener('click', () => {
   dicePlay = rollDice(nDicePlay);
   let rollResults = checkScore(dicePlay);
-  let nResults = rollResults.length;
-  let rollResultsTitles = [];
-  for (let i = 0; i < nResults; i++) {
-    rollResultsTitles.push(rollResults[i][0]);
-  }
+  let rollResultsTitles = getAllTitles(rollResults);
 
   const farkleString = "Farkle! Your roll has no combinations!";
   const resultsString = "Your highest value combinations are: ";
@@ -162,14 +158,17 @@ rollB.addEventListener('click', () => {
   }
 });
 
-diceBArray[0].addEventListener('click', () => {
-  playBClick(0);
-});
+diceBArray[0].addEventListener('click', () => {playBClick(0);});
+diceBArray[1].addEventListener('click', () => {playBClick(1);});
+diceBArray[2].addEventListener('click', () => {playBClick(2);});
+diceBArray[3].addEventListener('click', () => {playBClick(3);});
+diceBArray[4].addEventListener('click', () => {playBClick(4);});
+diceBArray[5].addEventListener('click', () => {playBClick(5);});
 
 const scoreTable = {
   farkle: ["farkle", 0],
-  one: ["1", 100], //0
-  five: ["5", 50], //1
+  one: ["1", 100],
+  five: ["5", 50],
   three1s: ["1-1-1", 1000],
   three2s: ["2-2-2", 200],
   three3s: ["3-3-3", 300],
@@ -186,16 +185,53 @@ const scoreTable = {
 };
 
 function playBClick(selectedB) {
-  diceBArray[selectedB].hidden = true;
-  diceArray[selectedB].hidden = true;
-  nDicePlay-= 1; //subtract a dice in play
-
   let value = dicePlay[selectedB];
+
   row2Array[nDiceRow2].src = "images/dice-" + value + "-640px.png";
   row2Array[nDiceRow2].hidden = false;
   row2BArray[nDiceRow2].hidden = false;
+  diceRow2[nDiceRow2] = value;
 
-  nDiceRow2+= 1;
+  dicePlay[selectedB] = 0;
+  dicePlay = updateDicePlay(dicePlay);
+  nDicePlay -= 1; //subtract a dice in play
+
+  nDiceRow2 += 1;
+}
+
+function updateDicePlay(d6Array) {
+  newArray = d6Array.filter(value => value > 0); //remove zero values
+  for (let i = 0; i < 6; i++) {
+    if (!newArray[i]) {
+      newArray.push(0) //append 0's if they were removed
+      diceArray[i].hidden = true;
+      diceBArray[i].hidden = true;
+      continue;
+    }
+    diceArray[i].src = "images/dice-" + newArray[i] + "-640px.png";
+    diceArray[i].hidden = false;
+    diceBArray[i].hidden = false;
+  }
+
+  return newArray;
+}
+
+function getAllTitles(completeResults) {
+  let nResults = completeResults.length;
+  let allTitles = [];
+  for (let i = 0; i < nResults; i++) {
+    allTitles.push(completeResults[i][0]);
+  }
+  return allTitles;
+}
+
+function getTotalScore(completeResults) {
+  let nResults = completeResults.length;
+  let totalScore;
+  for (let i = 0; i < nResults; i++) {
+    totalScore += completeResults[i][1];
+  }
+  return totalScore;
 }
 
 function checkScore(d6Array) {
