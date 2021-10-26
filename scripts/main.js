@@ -74,6 +74,7 @@ const bankB = document.getElementById("bank-button");
 //get text elements to change
 const roundScore = document.getElementById("round-score");
 const playText = document.getElementById("play-text");
+const notifications = document.getElementById("notifications");
 
 // Get dice elements in play area and store in array
 const diceArray = [document.getElementById("die1"),
@@ -135,10 +136,14 @@ let nDiceRow1 = 0;
 let diceRow2 = [0,0,0,0,0,0];
 let nDiceRow2 = 0;
 let prevDice = [0,0,0,0,0,0];
+let originalRoll = [1,2,3,4,5,6]; //original roll for reference purposes does not represent what is in play area, but what was originally rolled.
 
 // Event listener and handler for clicking roll button
 rollB.addEventListener('click', () => {
+  notifications.textContent = "Notifications:"
+
   dicePlay = rollDice(nDicePlay);
+  originalRoll = clone(dicePlay);
   let rollResults = checkScore(dicePlay);
   let rollResultsTitles = getAllTitles(rollResults);
 
@@ -173,6 +178,7 @@ row2BArray[4].addEventListener('click', () => {row2BClick(4);});
 row2BArray[5].addEventListener('click', () => {row2BClick(5);});
 
 const scoreTable = {
+  /*Title, score*/
   farkle: ["farkle", 0],
   one: ["1", 100],
   five: ["5", 50],
@@ -193,6 +199,13 @@ const scoreTable = {
 
 function playBClick(selectedB) {
   let value = dicePlay[selectedB];
+
+  if (!isValid(originalRoll, value)) {
+    notifications.textContent = "That is not part of a combination!";
+    return;
+  } else {
+    notifications.textContent = "Notifications:";
+  }
 
   diceRow2[nDiceRow2] = value;
   diceRow2 = updateDiceRow2(diceRow2);
@@ -218,7 +231,7 @@ function row2BClick(selectedB) {
 }
 
 function updateDicePlay(d6Array) {
-  newArray = d6Array.filter(value => value > 0); //remove zero values
+  let newArray = d6Array.filter(value => value > 0); //remove zero values
   for (let i = 0; i < 6; i++) {
     if (!newArray[i]) {
       newArray.push(0) //append 0's if they were removed
@@ -234,7 +247,7 @@ function updateDicePlay(d6Array) {
 }
 
 function updateDiceRow2(d6Array) {
-  newArray = d6Array.filter(value => value > 0); //remove zero values
+  let newArray = d6Array.filter(value => value > 0); //remove zero values
   for (let i = 0; i < 6; i++) {
     if (!newArray[i]) {
       newArray.push(0) //append 0's if they were removed
@@ -265,6 +278,40 @@ function getTotalScore(completeResults) {
     totalScore += completeResults[i][1];
   }
   return totalScore;
+}
+
+function isValid(d6Array,value) {
+  /*
+  This function takes an array and a value and checks if that
+  value is allowed for scoring purposes based on the array given.
+  For example, if the array is [1,2,3,3,3,6] then values 2 and 6 will return
+  false since they are not part of a combination that gives a score.
+  Returns a boolean
+  */
+  let results = checkScore(d6Array);
+
+  //if the player farkled than no values are allowed
+  if (results[0][0] == "farkle") {
+    return false;
+  }
+
+  //if value is 1 or 5 then that is always allowed
+  if (value == "1" || value == "5") {
+    return true;
+  }
+
+  //if results are a combination that uses all 6 dice then the value must be used
+  if (results[0][0] == "Six-of-a-kind" || results[0][0] == "Straight" || results[0][0] == "Three pairs" || results[0][0] == "Four-of-a-kind + pair" || results[0][0] == "Two triplets") {
+    return true;
+  }
+
+  //if there are 3 or more of the value in the array then it is always valid
+  if (d6Array.filter(number => number == value).length >= 3) {
+    return true;
+  }
+
+  //If all the above are not true then return false
+  return false;
 }
 
 function checkScore(d6Array) {
@@ -437,4 +484,36 @@ function rollDice(nDice = 6) {
   },(timeLimit + interval));
 
   return rd6;
+}
+
+function clone(obj) {
+    // Handle the 3 simple types, and null or undefined
+    if (null == obj || "object" != typeof obj) return obj;
+
+    // Handle Date
+    if (obj instanceof Date) {
+        var copy = new Date();
+        copy.setTime(obj.getTime());
+        return copy;
+    }
+
+    // Handle Array
+    if (obj instanceof Array) {
+        var copy = [];
+        for (var i = 0, len = obj.length; i < len; i++) {
+            copy[i] = clone(obj[i]);
+        }
+        return copy;
+    }
+
+    // Handle Object
+    if (obj instanceof Object) {
+        var copy = {};
+        for (var attr in obj) {
+            if (obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
+        }
+        return copy;
+    }
+
+    throw new Error("Unable to copy obj! Its type isn't supported.");
 }
