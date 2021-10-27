@@ -117,12 +117,16 @@ button.row-dice {
   transform: translateY(-15px);
 }
 
-.sidebar-button {
+.sidebar-button, .sidebar-button2 {
   color: white;
   background-color: #bd5a4a;
 }
 
 .sidebar-button:hover {
+  background-color: #395a83;
+}
+
+.sidebar-button2:hover {
   background-color: #395a83;
 }
 
