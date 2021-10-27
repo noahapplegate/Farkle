@@ -75,6 +75,7 @@ const bankB = document.getElementById("bank-button");
 const roundScore = document.getElementById("round-score");
 const playText = document.getElementById("play-text");
 const notifications = document.getElementById("notifications");
+const row2Score = document.getElementById("row2-score");
 
 // Get dice elements in play area and store in array
 const diceArray = [document.getElementById("die1"),
@@ -128,6 +129,9 @@ for (let i = 0; i < 6; i++) {
   row2BArray[i].hidden = true;
 }
 
+rollPrevB.disabled = true; //disable roll prev. button at start of game
+//rollPrevB.style.color = '#bd5a4a';
+
 //create variables to track turn
 let dicePlay = [1,2,3,4,5,6]; //Dice in play
 let nDicePlay = 6;// number of dice in play
@@ -137,30 +141,83 @@ let diceRow2 = [0,0,0,0,0,0];
 let nDiceRow2 = 0;
 let prevDice = [0,0,0,0,0,0];
 let originalRoll = [1,2,3,4,5,6]; //original roll for reference purposes does not represent what is in play area, but what was originally rolled.
+let turnScore = 0;
+let startOfTurn = true; //this boolean tracks if this is the first roll of the turn or not.
 
 // Event listener and handler for clicking roll button
 rollB.addEventListener('click', () => {
-  notifications.textContent = "Notifications:"
+  notifications.textContent = "Notifications: "
 
-  dicePlay = rollDice(nDicePlay);
-  originalRoll = clone(dicePlay);
-  let rollResults = checkScore(dicePlay);
-  let rollResultsTitles = getAllTitles(rollResults);
-
-  const farkleString = "Farkle! Your roll has no combinations!";
-  const resultsString = "Your highest value combinations are: ";
-
-  if (rollResults[0][1] == 0) {
-    playText.textContent = resultsString;
-    let finishAnimate = setTimeout(function() {
-      playText.textContent = farkleString;
-    },(timeLimit + interval));
-  } else {
-    playText.textContent = resultsString;
-    let finishAnimate = setTimeout(function() {
-      playText.textContent = resultsString + rollResultsTitles.join(", ");
-    },(timeLimit + interval));
+  if (startOfTurn) {
+    startOfTurn = false;
+    //reset variables
+    dicePlay = [1,2,3,4,5,6];
+    nDicePlay = 6;
+    diceRow1 = [0,0,0,0,0,0];
+    nDiceRow1 = 0;
+    diceRow2 = [0,0,0,0,0,0];
+    nDiceRow2 = 0;
+    prevDice = [0,0,0,0,0,0];
+    originalRoll = [1,2,3,4,5,6];
+    turnScore = 0;
+    updateDicePlay(dicePlay);
+    updateDiceRow1(diceRow1);
+    updateDiceRow2(diceRow2);
+  } else if (nDiceRow2 == 0) {
+    notifications.textContent = "Notifications: You must score at least one die to continue rolling";
+    return;
   }
+
+  //if player set aside dice that doesn't make a valid combination then stop function
+  for (let i = 0; i < nDiceRow2; i++) {
+    if (!isValid(diceRow2, diceRow2[i])) {
+      notifications.textContent = "Notifications: One or more of your dice set aside doesn't make an allowed combination";
+      return;
+    }
+  }
+
+  initiateDiceRolling();
+});
+
+rollPrevB.addEventListener('click', () => {
+  startOfTurn = false;
+  notifications.textContent = "Notifications: "
+
+  rollPrevB.disabled = true;
+  //rollPrevB.style.color = '#bd5a4a';
+
+  initiateDiceRolling();
+});
+
+bankB.addEventListener('click', () => {
+  if (nDiceRow2 == 0) {
+    notifications.textContent = "Notifications: You must score at least one die to bank your score";
+    return;
+  }
+
+  turnScore += getTotalScore(checkScore(diceRow2));
+
+  //==========================================================================
+  //Code that adds turnScore to current player and then changes to next player
+  //==========================================================================
+
+  notifications.textContent = "Notifications: Next player's turn, click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score"
+
+  rollPrevB.disabled = false;
+  //rollPrevB.style.color = white;
+
+  startOfTurn = true;
+
+  prevDice = clone(dicePlay);
+
+  diceRow1 = [0,0,0,0,0,0];
+  nDiceRow1 = 0;
+  diceRow2 = [0,0,0,0,0,0];
+  nDiceRow2 = 0;
+  updateDiceRow1(diceRow1);
+  updateDiceRow2(diceRow2);
+
+  roundScore.textContent = "Previous score: " + turnScore;
 });
 
 diceBArray[0].addEventListener('click', () => {playBClick(0);});
@@ -197,14 +254,100 @@ const scoreTable = {
   twoTriplets: ["Two triplets", 2500]
 };
 
+function initiateDiceRolling() {
+  /*
+  This function uses many global variables and is essentially the code that is
+  run when rollB and rollPrevB buttons are clicked. It handles both the
+  displaying of the combinations and certain notifications depending on the
+  situation. It also calls rollDice function which is the function that actually
+  animates the dice and then this function takes those results.
+  */
+
+  rollB.disabled = true; //temporarily disable button while animation plays
+  bankB.disabled = true;
+
+  //Handle hot dice case
+  if (nDicePlay == 0) {
+    turnScore += getTotalScore(checkScore(diceRow2));
+
+    nDicePlay = 6;
+    diceRow1 = [0,0,0,0,0,0];
+    nDiceRow1 = 0;
+    diceRow2 = [0,0,0,0,0,0];
+    nDiceRow2 = 0;
+
+    updateDiceRow1(diceRow1);
+    updateDiceRow2(diceRow2);
+  }
+
+  dicePlay = rollDice(nDicePlay);
+  originalRoll = clone(dicePlay);
+  let rollResults = checkScore(dicePlay);
+  let rollResultsTitles = getAllTitles(rollResults);
+
+  //this if statement handles transfering dice to row1 and updating turnScore
+  if (nDiceRow2 > 0) {
+    //Add values in diceRow2 to diceRow1
+    for (let i = nDiceRow1; i < nDiceRow1 + nDiceRow2; i++) {
+      diceRow1[i] = diceRow2[i - nDiceRow1];
+    }
+
+    turnScore += getTotalScore(checkScore(diceRow2));
+
+    diceRow1 = updateDiceRow1(diceRow1);
+    diceRow2 = updateDiceRow2([0,0,0,0,0,0]);
+
+    nDiceRow1 += nDiceRow2;
+    nDiceRow2 = 0;
+  }
+
+  const farkleString = "Farkle! Your roll has no combinations!";
+  const resultsString = "Your highest value combinations are: ";
+
+  if (rollResults[0][1] == 0) {
+    playText.textContent = resultsString;
+
+    startOfTurn = true;
+
+    let finishAnimate = setTimeout(function() {
+      rollB.disabled = false; //reactivate button after animation
+      bankB.disabled = false;
+      //=================================
+      //Code that changes to next player
+      //=================================
+      playText.textContent = farkleString;
+    },(timeLimit + interval));
+  } else {
+    playText.textContent = resultsString;
+    let finishAnimate = setTimeout(function() {
+      rollB.disabled = false; //reactivate button after animation
+      bankB.disabled = false;
+      playText.textContent = resultsString + rollResultsTitles.join(", ");
+
+      for (let i = 0; i < nDicePlay; i++) {
+        if (!isValid(dicePlay, dicePlay[i])) {
+          break; //exit loop early if one of the values is not valid
+        } else if (i+1 == nDicePlay) {
+          //Show this message if all dice are allowed to be scored.
+          notifications.textContent = "Notifications: Hot dice! You may continue rolling after you set aside the remaining dice."
+        }
+      }
+    },(timeLimit + interval));
+  }
+}
+
 function playBClick(selectedB) {
+  /*
+  this function occurs when a dice in the play area is clicked. If valid it
+  transfers the dice to row2
+  */
   let value = dicePlay[selectedB];
 
   if (!isValid(originalRoll, value)) {
-    notifications.textContent = "That is not part of a combination!";
+    notifications.textContent = "Notifications: That is not part of a combination!";
     return;
   } else {
-    notifications.textContent = "Notifications:";
+    notifications.textContent = "Notifications: ";
   }
 
   diceRow2[nDiceRow2] = value;
@@ -215,9 +358,17 @@ function playBClick(selectedB) {
 
   nDicePlay -= 1;
   nDiceRow2 += 1;
+
+  if (nDicePlay == 0) {
+    notifications.textContent = "Notifications: Hot dice! Click the roll button to continue rolling with six dice and build on your current score!"
+  }
 }
 
 function row2BClick(selectedB) {
+  /*
+  this function occurs when a dice in the row2 area is clicked. If valid it
+  transfers the dice to row2
+  */
   let value = diceRow2[selectedB];
 
   dicePlay[nDicePlay] = value;
@@ -231,6 +382,11 @@ function row2BClick(selectedB) {
 }
 
 function updateDicePlay(d6Array) {
+  /*
+  this function is used when the images for the dice in the play area need to
+  be updated with a new array of dice values. Often used when a dice is clicked.
+  Needs acces to global variables diceArray and diceBArray.
+  */
   let newArray = d6Array.filter(value => value > 0); //remove zero values
   for (let i = 0; i < 6; i++) {
     if (!newArray[i]) {
@@ -246,7 +402,37 @@ function updateDicePlay(d6Array) {
   return newArray;
 }
 
+function updateDiceRow1(d6Array) {
+  /*
+  this function is used when the images for the dice in the row2 area need to
+  be updated with a new array of dice values. Often used when a dice is clicked.
+  It also changes the display score.
+  Needs acces to global variables row1Array, row1BArray, and roundScore.
+  */
+  let newArray = d6Array.filter(value => value > 0); //remove zero values
+  for (let i = 0; i < 6; i++) {
+    if (!newArray[i]) {
+      newArray.push(0) //append 0's if they were removed
+      row1Array[i].hidden = true;
+      row1BArray[i].hidden = true;
+      continue;
+    }
+    row1Array[i].src = "images/dice-" + newArray[i] + "-640px.png";
+    row1Array[i].hidden = false;
+    row1BArray[i].hidden = false;
+  }
+
+  roundScore.textContent = "score if banked: " + turnScore;
+
+  return newArray;
+}
+
 function updateDiceRow2(d6Array) {
+  /*
+  this function is used when the images for the dice in the row2 area need to
+  be updated with a new array of dice values. Often used when a dice is clicked
+  Needs acces to global variables row2Array and row2BArray.
+  */
   let newArray = d6Array.filter(value => value > 0); //remove zero values
   for (let i = 0; i < 6; i++) {
     if (!newArray[i]) {
@@ -259,10 +445,15 @@ function updateDiceRow2(d6Array) {
     row2Array[i].hidden = false;
     row2BArray[i].hidden = false;
   }
+
+    row2Score.textContent = getTotalScore(checkScore(newArray));
+    roundScore.textContent = "score if banked: " + (turnScore + getTotalScore(checkScore(newArray)));
   return newArray;
 }
 
 function getAllTitles(completeResults) {
+  //This function helps inteperet results from the checkScore function and
+  //gets all the titles from the results given
   let nResults = completeResults.length;
   let allTitles = [];
   for (let i = 0; i < nResults; i++) {
@@ -272,8 +463,10 @@ function getAllTitles(completeResults) {
 }
 
 function getTotalScore(completeResults) {
+  //This function helps inteperet results from the checkScore function and
+  //gets the sum of the scores from the results given
   let nResults = completeResults.length;
-  let totalScore;
+  let totalScore = 0;
   for (let i = 0; i < nResults; i++) {
     totalScore += completeResults[i][1];
   }
