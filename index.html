@@ -40,14 +40,14 @@
           <button class="sidebar-button" id="roll-button" type="button">
             Roll
           </button>
-          <button class="sidebar-button" id="roll-prev-button" type="button">
+          <button class="sidebar-button2" id="roll-prev-button" type="button">
             Roll prev.
           </button>
         </div>
         <button class="sidebar-button" id="bank-button" type="button">
           Bank
         </button>
-        <p id="round-score">Score this turn: </p>
+        <p id="round-score">score if banked: 0</p>
         <hr>
         <div class="row" id="row1">
           <div class="row-dice">
@@ -102,6 +102,7 @@
             <img class="row-dice" id="row2-img-6" src="images/dice-6-640px.png" />
           </div>
         </div>
+        <p id="row2-score">0</p>
         <hr>
       </div>
 
@@ -133,9 +134,15 @@
           <button class="play-dice" id="play-b-6"></button>
           <img class="play-dice" id="die6" src="images/dice-6-640px.png" />
         </div>
-
+      <p>Notes: need to hide button in row2 when there aren't any dice.
+        <br>
+        Need to work on hiding and showing [Roll prev.] appropriately
+        <br>
+        Need to add rules and scoring legend
+      </p>
       </div>
       <!-- Hints -->
     </div> <!--end wrapper2-->
+
   </body>
 </html>
