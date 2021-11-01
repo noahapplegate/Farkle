@@ -85,6 +85,7 @@ const diceArray = [document.getElementById("die1"),
   document.getElementById("die5"),
   document.getElementById("die6")];
 
+//B stands for button
 const diceBArray = [document.getElementById("play-b-1"),
   document.getElementById("play-b-2"),
   document.getElementById("play-b-3"),
@@ -164,7 +165,7 @@ rollB.addEventListener('click', () => {
     updateDiceRow1(diceRow1);
     updateDiceRow2(diceRow2);
   } else if (nDiceRow2 == 0) {
-    notifications.textContent = "Notifications: You must score at least one die to continue rolling";
+    notifications.textContent = "Notifications: You must set aside at least one die to continue rolling";
     return;
   }
 
@@ -191,7 +192,7 @@ rollPrevB.addEventListener('click', () => {
 
 bankB.addEventListener('click', () => {
   if (nDiceRow2 == 0) {
-    notifications.textContent = "Notifications: You must score at least one die to bank your score";
+    notifications.textContent = "Notifications: You must set aside at least one die to bank your score";
     return;
   }
 
