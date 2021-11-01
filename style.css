@@ -89,6 +89,27 @@ div.wrapper2 {
   gap: 10%;
 }
 
+.panel h5.legend-header {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.panel .sub-wrapper-legend {
+  display: grid;
+  margin-left: 0%;
+  grid-template-columns: 40% 55%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.panel .sub-wrapper-legend p.legend {
+  text-align: right;
+  padding-right: 10px;
+  margin-top: 5px;
+  white-space: pre;
+}
+
 .panel .row {
   display: inline-block;
   height: 60px;
@@ -134,18 +155,13 @@ button.row-dice {
   display: inline;
   margin-top: 50px;
   margin-left: 10px;
-  width: 60%;
+  width: calc(100% - 1050px); /*1050px is about the width of the panel and the rules plus their padding*/
   padding: 50px;
+  padding-top: 20px;
+  padding-right: 10px;
 }
 
 .play-area div.play-dice {
-  /*position: relative;
-  width: 75px;
-  height: 75px;
-  background-color: white;
-  border-radius: 10px;
-  margin-right: 50px;
-  margin-bottom: 50px;*/
   display: inline-block;
 }
 
@@ -165,4 +181,21 @@ button.row-dice {
   height: 75px;
   border: none;
   cursor: pointer;
+}
+
+.rules {
+  margin-top: 50px;
+  margin-left: 10px;
+  width: 600px;
+  padding: 30px;
+  padding-top: 20px;
+}
+
+ul.rules-list {
+  list-style: none;
+  padding: 0;
+}
+
+ul.rules-list li{
+  padding-bottom: 3px;
 }

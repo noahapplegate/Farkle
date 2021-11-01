@@ -104,6 +104,25 @@
         </div>
         <p id="row2-score">0</p>
         <hr>
+        <h5 class=legend-header>Combinations:</h5>
+        <div class="sub-wrapper-legend">
+          <p class="legend">Farkle = 0      </p>
+          <p class="legend">1 = 100  </p>
+          <p class="legend">1-1-1 = 1000</p>
+          <p class="legend">5 = 50    </p>
+          <p class="legend">2-2-2 = 200  </p>
+          <p class="legend">Four-of-a-kind = 1000</p>
+          <p class="legend">3-3-3 = 300  </p>
+          <p class="legend">Five-of-a-kind = 2000</p>
+          <p class="legend">4-4-4 = 400  </p>
+          <p class="legend">Six-of-a-kind = 3000</p>
+          <p class="legend">5-5-5 = 500  </p>
+          <p class="legend">Straight = 1500</p>
+          <p class="legend">6-6-6 = 600  </p>
+          <p class="legend">Three pairs = 1500</p>
+          <p class="legend">Two triplets = 2500</p>
+          <p class="legend">Four-of-a-kind+pair = 1500</p>
+        </div>
       </div>
 
       <!-- Play Area -->
@@ -134,12 +153,26 @@
           <button class="play-dice" id="play-b-6"></button>
           <img class="play-dice" id="die6" src="images/dice-6-640px.png" />
         </div>
-      <p>Notes: need to hide button in row2 when there aren't any dice.
-        <br>
-        Need to work on hiding and showing [Roll prev.] appropriately
-        <br>
-        Need to add rules and scoring legend
-      </p>
+      </div>
+
+      <div class="box rules">
+        <h1>Farkle Instructions</h1>
+        <hr>
+        <ul class="rules-list">
+          <li><strong>Objective:</strong> Be the first player to get 10,000 points.</li>
+          <li><strong>On your turn:</strong> Start by clicking the roll button to roll the dice.</li>
+          <ul>
+            <li>Dice score points depending on what combinations they make.</li>
+            <li>You may set aside dice that are a part of combinations by clicking on them.</li>
+            <li>Only dice that were rolled together can be a part of the same combination.</li>
+            <li>When you have dice set aside, you may either roll again with the remaining dice to improve your score or you can "bank" your score to end your turn and add the score this turn to your total score.</li>
+            <li>You must set aside at least one die to bank or roll again.</li>
+            <li>If you roll and there are no combinations, you "farkled". Your turn ends and you lose all your points for this turn.</li>
+          </ul>
+          <li><strong>Hot Dice:</strong> After you roll if all remaining dice are part of a combination you may continue rolling with six dice.</li>
+          <li><strong>Roll Previous:</strong> If the player before you banked their score, you have the option to start your turn with the score they banked and with the dice they had remaining.</li>
+          <li><strong>Last chance:</strong> After the first person reaches 10,000 points and banks their score, each other player has one turn to try and end the game with the highest score.</li>
+        </ul>
       </div>
       <!-- Hints -->
     </div> <!--end wrapper2-->
