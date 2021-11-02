@@ -1,5 +1,5 @@
-const MIN_PLAYERS = 1;
-const MAX_PLAYERS = 3;
+const MIN_PLAYERS = 3;
+const MAX_PLAYERS = 5;
 
 const inactiveScoreCards = [];
 const scoreCardContainer = document.querySelector("div.score-card-container");   // Reference to scorecard container
@@ -26,7 +26,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     // Add an event listener to the remove button
     const scoreCardRemoveButton = scoreCard.querySelector("button.removeButton");
     scoreCardRemoveButton.addEventListener("click", () => {
-            if (inactiveScoreCards.length < MAX_PLAYERS - 1) {
+            if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS) {
             // Reset the player's name and score
             scoreCard.querySelector("input").value = "";
             scoreCard.querySelector("div.userScore").innerText = 0;
@@ -53,6 +53,10 @@ addButton.addEventListener("click", () => {
         scoreCardContainer.append(inactiveScoreCards.pop());
     }
 });
+
+// Initialize the active score card
+let activeScoreCard = scoreCardContainer.firstElementChild;
+activeScoreCard.classList.add("active-score-card");
 
 const timeLimit = 2500; //Animation time in ms
 const interval = 50; //Animation cycle in ms
