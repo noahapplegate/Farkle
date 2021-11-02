@@ -19,17 +19,29 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     scoreCard.innerHTML = `
         <input type="text" class="name" maxlength="20">
         <p>Current Score:</p>
-        <div class="userScore">0</div>
+        <div class="user-score">0</div>
+        <input type="number" class="user-score-num">
         <button class="removeButton">Remove Player</button>    
     `;
+
+    // Use the input .user-score-num to store this player's score
+    score = scoreCard.querySelector(".user-score-num");
+    score.value = 0;
+    score.hidden = true;
 
     // Add an event listener to the remove button
     const scoreCardRemoveButton = scoreCard.querySelector("button.removeButton");
     scoreCardRemoveButton.addEventListener("click", () => {
-            if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS) {
+        if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS) {
+            // If we are removing the active card, set the active card to the next card
+            if (scoreCard === currentlyPlaying) {
+                changeTurn();
+            }
+
             // Reset the player's name and score
             scoreCard.querySelector("input").value = "";
-            scoreCard.querySelector("div.userScore").innerText = 0;
+            scoreCard.querySelector("div.user-score").innerText = 0;
+            scoreCard.querySelector(".user-score-num").value = 0;
 
             // Remove the Element from the DOM and add it list of unused scoreCards
             inactiveScoreCards.push(scoreCardContainer.removeChild(scoreCard));
@@ -57,6 +69,30 @@ addButton.addEventListener("click", () => {
 // Start the game with the first score card having the first turn
 let currentlyPlaying = scoreCardContainer.firstElementChild;
 currentlyPlaying.classList.add("currently-playing");
+
+// Updates the currentlyPlaying reference to the next scorecard element
+// in the scorecard container (or wraps around to the beginning)
+const changeTurn = () => {
+    // Get the element who will be playing next turn
+    let nextPlayer = currentlyPlaying.nextElementSibling;
+    nextPlayer = nextPlayer != null ? nextPlayer : scoreCardContainer.firstElementChild;
+
+    // Update the currently playing class to be active on the next element
+    currentlyPlaying.classList.remove("currently-playing");
+    nextPlayer.classList.add("currently-playing");
+
+    // Update currently playing to reference the next player
+    currentlyPlaying = nextPlayer;
+};
+
+const updateScore = (pointsScored) => {
+    // Add to the current player's score
+  let newScore = currentlyPlaying.querySelector(".user-score-num").valueAsNumber + pointsScored;
+  currentlyPlaying.querySelector(".user-score-num").valueAsNumber = newScore;
+
+  // Render the player's new score
+  currentlyPlaying.querySelector(".user-score").innerText = newScore;
+};
 
 const timeLimit = 2500; //Animation time in ms
 const interval = 50; //Animation cycle in ms
@@ -196,6 +232,9 @@ bankB.addEventListener('click', () => {
   //==========================================================================
   //Code that adds turnScore to current player and then changes to next player
   //==========================================================================
+  updateScore(turnScore);
+
+  changeTurn();
 
   notifications.textContent = "Notifications: Next player's turn, click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score"
 
@@ -311,6 +350,7 @@ function initiateDiceRolling() {
       //=================================
       //Code that changes to next player
       //=================================
+      changeTurn();
       playText.textContent = farkleString;
     },(timeLimit + interval));
   } else {
