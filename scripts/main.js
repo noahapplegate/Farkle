@@ -2,7 +2,7 @@ const MIN_PLAYERS = 1;
 const MAX_PLAYERS = 3;
 
 const inactiveScoreCards = [];
-const scoreCardContainer = document.querySelector("div.wrapper");   // Reference to scorecard container
+const scoreCardContainer = document.querySelector("div.score-card-container");   // Reference to scorecard container
 
 // Initialize scorecards for the start of the game
 // - Creates a DOM Element to hold the scorecard
