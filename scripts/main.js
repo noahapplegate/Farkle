@@ -54,9 +54,9 @@ addButton.addEventListener("click", () => {
     }
 });
 
-// Initialize the active score card
-let activeScoreCard = scoreCardContainer.firstElementChild;
-activeScoreCard.classList.add("active-score-card");
+// Start the game with the first score card having the first turn
+let currentlyPlaying = scoreCardContainer.firstElementChild;
+currentlyPlaying.classList.add("currently-playing");
 
 const timeLimit = 2500; //Animation time in ms
 const interval = 50; //Animation cycle in ms
