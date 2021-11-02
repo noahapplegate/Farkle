@@ -1,67 +1,58 @@
 const MIN_PLAYERS = 1;
 const MAX_PLAYERS = 3;
 
-// Store score card and remove button DOM element names
-const scoreCardNames = ['score-card1', 'score-card2', 'score-card3'];
-const removeButtonNames = ['remove-button1', 'remove-button2', 'remove-button3'];
+const inactiveScoreCards = [];
+const scoreCardContainer = document.querySelector("div.wrapper");   // Reference to scorecard container
 
-// Get references to score card DOM elements
-// Only show score cards for min players to start
-const displayedCards = [];
-const hiddenCards = [];
-for (let i = 0; i < MIN_PLAYERS; i++) {
-    displayedCards.push(document.getElementById(scoreCardNames[i]));
-}
-for (let i = MAX_PLAYERS-1; i >= MIN_PLAYERS; i--) {
-    let hiddenCard = document.getElementById(scoreCardNames[i]);
-    hiddenCard.hidden = true;
-    hiddenCards.push(hiddenCard);
-}
+// Initialize scorecards for the start of the game
+// - Creates a DOM Element to hold the scorecard
+// - Adds HTML to score a player's name, score, and a remove button
+// - Adds Event listeners to the remove button
+for (let i = 0; i < MAX_PLAYERS; ++i) {
+    // Create a new Element for this score card
+    let scoreCard = document.createElement("div");
+    scoreCard.classList.add("box");
+    scoreCard.classList.add("score-card");
+        
+    // Scorecards will store the player's name, their current score, and a button
+    // to remove this player from the game
+    scoreCard.innerHTML = `
+        <input type="text" class="name" maxlength="20">
+        <p>Current Score:</p>
+        <div class="userScore">0</div>
+        <button class="removeButton">Remove Player</button>    
+    `;
 
-// Get references to remove button DOM elements
-const removeButtons = []
-removeButtonNames.forEach((buttonName) => {
-    removeButtons.push(document.getElementById(buttonName));
-})
+    // Add an event listener to the remove button
+    const scoreCardRemoveButton = scoreCard.querySelector("button.removeButton");
+    scoreCardRemoveButton.addEventListener("click", () => {
+            if (inactiveScoreCards.length < MAX_PLAYERS - 1) {
+            // Reset the player's name and score
+            scoreCard.querySelector("input").value = "";
+            scoreCard.querySelector("div.userScore").innerText = 0;
 
-// Get add button DOM element
-let addButton = document.getElementById('add-button');
-let addCard = document.getElementById('add-card');
-
-// Event listener and handler for adding new players
-// Gets the last hidden card and displays it
-addButton.addEventListener('click', () => {
-    // Only add cards up to the max number of players
-    if (displayedCards.length < MAX_PLAYERS) {
-        let newCard = hiddenCards.pop();
-        newCard.hidden = false;
-        displayedCards.push(newCard);
-
-        if (displayedCards.length == MAX_PLAYERS) {
-            addCard.hidden = true;
+            // Remove the Element from the DOM and add it list of unused scoreCards
+            inactiveScoreCards.push(scoreCardContainer.removeChild(scoreCard));
         }
+    });
+
+    // Start with the minimum number of players initially
+    if (i < MIN_PLAYERS) {
+        scoreCardContainer.append(scoreCard);
+    }
+    else {
+        inactiveScoreCards.push(scoreCard);
+    }
+}
+
+// Create event listener for add button to add new players
+const addButton = document.querySelector("#add-button");
+addButton.addEventListener("click", () => {
+    // Add an inactive card to the DOM if one exists
+    if (inactiveScoreCards.length > 0) {
+        scoreCardContainer.append(inactiveScoreCards.pop());
     }
 });
-
-// Add Event listeners and handlers for closing
-const removeScoreCard = (event) => {
-    if (displayedCards.length > MIN_PLAYERS) {
-        let scoreCard = event.currentTarget.parentNode;
-        const index = displayedCards.indexOf(scoreCard);
-        if (index > -1) {
-            if (displayedCards.length == MAX_PLAYERS) {
-                addCard.hidden = false;
-            }
-
-            displayedCards.splice(index, 1);
-            scoreCard.hidden = true;
-            hiddenCards.push(scoreCard);
-        }
-    }
-}
-removeButtons.forEach((removeButton) => {
-    removeButton.addEventListener('click', removeScoreCard);
-})
 
 const timeLimit = 2500; //Animation time in ms
 const interval = 50; //Animation cycle in ms
