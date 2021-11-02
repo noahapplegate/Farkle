@@ -1,8 +1,10 @@
 /*The two rulesets below set all stlyes to alternative box sizing*/
 html {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -37,6 +39,10 @@ div.wrapper2 {
   text-align: center;
 }
 
+.active-score-card {
+  border: 5px solid gold;
+}
+
 .name {
   width: 180px;
   background-color: inherit;
@@ -48,7 +54,7 @@ div.wrapper2 {
 
 #add-card img {
   width: 170px;
-  height: 170px
+  height: 170px;
 }
 
 .panel {
@@ -138,7 +144,8 @@ button.row-dice {
   transform: translateY(-15px);
 }
 
-.sidebar-button, .sidebar-button2 {
+.sidebar-button,
+.sidebar-button2 {
   color: white;
   background-color: #bd5a4a;
 }
@@ -155,7 +162,9 @@ button.row-dice {
   display: inline;
   margin-top: 50px;
   margin-left: 10px;
-  width: calc(100% - 1050px); /*1050px is about the width of the panel and the rules plus their padding*/
+  width: calc(
+    100% - 1050px
+  ); /*1050px is about the width of the panel and the rules plus their padding*/
   padding: 50px;
   padding-top: 20px;
   padding-right: 10px;
@@ -196,6 +205,6 @@ ul.rules-list {
   padding: 0;
 }
 
-ul.rules-list li{
+ul.rules-list li {
   padding-bottom: 3px;
 }
