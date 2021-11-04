@@ -1,5 +1,5 @@
-const MIN_PLAYERS = 3;
-const MAX_PLAYERS = 5;
+const MIN_PLAYERS = 2;
+const MAX_PLAYERS = 6;
 
 const inactiveScoreCards = [];
 const scoreCardContainer = document.querySelector("div.score-card-container");   // Reference to scorecard container
@@ -17,9 +17,11 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     // Scorecards will store the player's name, their current score, and a button
     // to remove this player from the game
     scoreCard.innerHTML = `
-        <input type="text" class="name" maxlength="20">
-        <p>Current Score:</p>
-        <div class="user-score">0</div>
+        <input type="text" class="name" maxlength="20" placeholder="Enter Player Name">
+        <div>
+          <span>Score:</span>
+          <span class="user-score">0</span>
+        </div>
         <input type="number" class="user-score-num">
         <button class="removeButton">Remove Player</button>    
     `;
@@ -33,6 +35,10 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     const scoreCardRemoveButton = scoreCard.querySelector("button.removeButton");
     scoreCardRemoveButton.addEventListener("click", () => {
         if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS) {
+            if (inactiveScoreCards.length == 0) {
+              addButtonContainer.style.display = "flex";
+            }
+
             // If we are removing the active card, set the active card to the next card
             if (scoreCard === currentlyPlaying) {
                 changeTurn();
@@ -40,7 +46,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
 
             // Reset the player's name and score
             scoreCard.querySelector("input").value = "";
-            scoreCard.querySelector("div.user-score").innerText = 0;
+            scoreCard.querySelector("span.user-score").innerText = 0;
             scoreCard.querySelector(".user-score-num").value = 0;
 
             // Remove the Element from the DOM and add it list of unused scoreCards
@@ -58,11 +64,16 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
 }
 
 // Create event listener for add button to add new players
-const addButton = document.querySelector("#add-button");
+const addButton = document.querySelector(".add-button");
+const addButtonContainer = document.querySelector("#add-card");
 addButton.addEventListener("click", () => {
     // Add an inactive card to the DOM if one exists
     if (inactiveScoreCards.length > 0) {
-        scoreCardContainer.append(inactiveScoreCards.pop());
+      if (inactiveScoreCards.length == 1) {
+        addButtonContainer.style.display = "none";
+      }
+
+      scoreCardContainer.append(inactiveScoreCards.pop());
     }
 });
 
