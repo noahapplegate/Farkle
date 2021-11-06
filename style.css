@@ -188,6 +188,11 @@ button.row-dice {
   padding-right: 10px;
 }
 
+div.wrapper-play-dice {
+  height: 115px;
+  /*display: inline;*/
+}
+
 .play-area div.play-dice {
   display: inline-block;
 }
@@ -209,6 +214,7 @@ button.row-dice {
   height: 75px;
   border: none;
   cursor: pointer;
+  transform: translateY(20px);
 }
 
 .rules {
