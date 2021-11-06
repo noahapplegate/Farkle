@@ -13,7 +13,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     let scoreCard = document.createElement("div");
     scoreCard.classList.add("box");
     scoreCard.classList.add("score-card");
-        
+
     // Scorecards will store the player's name, their current score, and a button
     // to remove this player from the game
     scoreCard.innerHTML = `
@@ -23,7 +23,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
           <span class="user-score">0</span>
         </div>
         <input type="number" class="user-score-num">
-        <button class="removeButton">Remove Player</button>    
+        <button class="removeButton">Remove Player</button>
     `;
 
     // Use the input .user-score-num to store this player's score
@@ -247,7 +247,7 @@ bankB.addEventListener('click', () => {
 
   changeTurn();
 
-  notifications.textContent = "Notifications: Next player's turn, click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score"
+  notifications.textContent = "Notifications: Click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score"
 
   rollPrevB.disabled = false;
   //rollPrevB.style.color = white;
@@ -389,6 +389,11 @@ function playBClick(selectedB) {
   transfers the dice to row2
   */
   let value = dicePlay[selectedB];
+
+  if (startOfTurn == true) {
+    notifications.textContent = "Notifications: You haven't rolled yet!";
+    return;
+  }
 
   if (!isValid(originalRoll, value)) {
     notifications.textContent = "Notifications: That is not part of a combination!";
