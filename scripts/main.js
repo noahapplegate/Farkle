@@ -739,7 +739,6 @@ function alert(content = null) {
   updates the CSS accordingly.
   If you use this function make sure to reset it
   */
-  currentlyPlaying.classList.remove("currently-playing");
   if (content == null) {
     notifications.textContent = " ";
     notifications.classList.remove("alert");
