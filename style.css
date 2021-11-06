@@ -188,6 +188,15 @@ button.row-dice {
   padding-right: 10px;
 }
 
+#notifications {
+  min-height: 1.2em;
+}
+
+.alert {
+  background: linear-gradient(90deg, rgba(255,218,0,1) 0%, rgba(189,189,189,1) 90%);
+  border-radius: 3px;
+}
+
 div.wrapper-play-dice {
   height: 115px;
   /*display: inline;*/
