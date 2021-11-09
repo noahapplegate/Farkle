@@ -13,7 +13,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     let scoreCard = document.createElement("div");
     scoreCard.classList.add("box");
     scoreCard.classList.add("score-card");
-        
+
     // Scorecards will store the player's name, their current score, and a button
     // to remove this player from the game
     scoreCard.innerHTML = `
@@ -23,7 +23,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
           <span class="user-score">0</span>
         </div>
         <input type="number" class="user-score-num">
-        <button class="removeButton">Remove Player</button>    
+        <button class="removeButton">Remove Player</button>
     `;
 
     // Use the input .user-score-num to store this player's score
@@ -189,7 +189,7 @@ let startOfTurn = true; //this boolean tracks if this is the first roll of the t
 
 // Event listener and handler for clicking roll button
 rollB.addEventListener('click', () => {
-  notifications.textContent = "Notifications: "
+  alert(); //reset notifications
 
   if (startOfTurn) {
     startOfTurn = false;
@@ -207,14 +207,14 @@ rollB.addEventListener('click', () => {
     updateDiceRow1(diceRow1);
     updateDiceRow2(diceRow2);
   } else if (nDiceRow2 == 0) {
-    notifications.textContent = "Notifications: You must set aside at least one die to continue rolling";
+    alert("You must set aside at least one die to continue rolling");
     return;
   }
 
   //if player set aside dice that doesn't make a valid combination then stop function
   for (let i = 0; i < nDiceRow2; i++) {
     if (!isValid(diceRow2, diceRow2[i])) {
-      notifications.textContent = "Notifications: One or more of your dice set aside doesn't make an allowed combination";
+      alert("One or more of your dice set aside doesn't make an allowed combination");
       return;
     }
   }
@@ -224,7 +224,7 @@ rollB.addEventListener('click', () => {
 
 rollPrevB.addEventListener('click', () => {
   startOfTurn = false;
-  notifications.textContent = "Notifications: "
+  alert(); //reset notifications
 
   rollPrevB.disabled = true;
   //rollPrevB.style.color = '#bd5a4a';
@@ -234,7 +234,7 @@ rollPrevB.addEventListener('click', () => {
 
 bankB.addEventListener('click', () => {
   if (nDiceRow2 == 0) {
-    notifications.textContent = "Notifications: You must set aside at least one die to bank your score";
+    alert("You must set aside at least one die to bank your score");
     return;
   }
 
@@ -247,7 +247,7 @@ bankB.addEventListener('click', () => {
 
   changeTurn();
 
-  notifications.textContent = "Notifications: Next player's turn, click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score"
+  alert("Click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score");
 
   rollPrevB.disabled = false;
   //rollPrevB.style.color = white;
@@ -376,7 +376,7 @@ function initiateDiceRolling() {
           break; //exit loop early if one of the values is not valid
         } else if (i+1 == nDicePlay) {
           //Show this message if all dice are allowed to be scored.
-          notifications.textContent = "Notifications: Hot dice! You may continue rolling after you set aside the remaining dice."
+          alert("Hot dice! You may continue rolling after you set aside the remaining dice.");
         }
       }
     },(timeLimit + interval));
@@ -390,11 +390,16 @@ function playBClick(selectedB) {
   */
   let value = dicePlay[selectedB];
 
+  if (startOfTurn == true) {
+    alert("You haven't rolled yet!");
+    return;
+  }
+
   if (!isValid(originalRoll, value)) {
-    notifications.textContent = "Notifications: That is not part of a combination!";
+    alert("That is not part of a combination!");
     return;
   } else {
-    notifications.textContent = "Notifications: ";
+    alert(); //reset notifications
   }
 
   diceRow2[nDiceRow2] = value;
@@ -407,7 +412,7 @@ function playBClick(selectedB) {
   nDiceRow2 += 1;
 
   if (nDicePlay == 0) {
-    notifications.textContent = "Notifications: Hot dice! Click the roll button to continue rolling with six dice and build on your current score!"
+    alert("Hot dice! Click the roll button to continue rolling with six dice and build on your current score!");
   }
 }
 
@@ -724,6 +729,23 @@ function rollDice(nDice = 6) {
   },(timeLimit + interval));
 
   return rd6;
+}
+
+function alert(content = null) {
+  /*
+  content = text content that you want to alert the player, leave empty if you want to turn alert off
+  needs access to notifications DOM constant.
+  This function simply changes the notifications paragraph in the play area and
+  updates the CSS accordingly.
+  If you use this function make sure to reset it
+  */
+  if (content == null) {
+    notifications.textContent = " ";
+    notifications.classList.remove("alert");
+  } else {
+    notifications.textContent = content;
+    notifications.classList.add("alert");
+  }
 }
 
 function clone(obj) {

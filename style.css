@@ -188,6 +188,20 @@ button.row-dice {
   padding-right: 10px;
 }
 
+#notifications {
+  min-height: 1.2em;
+}
+
+.alert {
+  background: linear-gradient(90deg, rgba(255,218,0,1) 0%, rgba(189,189,189,1) 90%);
+  border-radius: 3px;
+}
+
+div.wrapper-play-dice {
+  height: 115px;
+  /*display: inline;*/
+}
+
 .play-area div.play-dice {
   display: inline-block;
 }
@@ -197,8 +211,9 @@ button.row-dice {
   height: 75px;
   background-color: white;
   border-radius: 10px;
+  margin-top: 20px;
   margin-right: 50px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 .play-area button.play-dice {
@@ -208,6 +223,7 @@ button.row-dice {
   height: 75px;
   border: none;
   cursor: pointer;
+  transform: translateY(20px);
 }
 
 .rules {
