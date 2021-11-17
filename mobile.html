@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Farkle mobile version</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+      if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent)) {
+          // Take the user to a different screen here.
+          window.location.href = "index.html";
+      }
+    </script>
+    <script src="scripts/main.js" defer></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="wrapper score-card-container">
+      </div>
+      <div class="box score-card" id="add-card">
+        <button class="add-button">Add New Player</button>
+      </div>
+    </div>
+
+    <div class="wrapper2">
+      <!-- Left Panel -->
+      <div class="box panel">
+        <div class="sub-wrapper">
+          <button class="sidebar-button" id="roll-button" type="button">
+            Roll
+          </button>
+          <button class="sidebar-button2" id="roll-prev-button" type="button">
+            Roll prev.
+          </button>
+        </div>
+        <button class="sidebar-button" id="bank-button" type="button">
+          Bank
+        </button>
+        <p id="round-score">score if banked: 0</p>
+        <hr>
+        <div class="row" id="row1">
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-1"></button>
+            <img class="row-dice" id="row1-img-1" src="images/dice-1-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-2"></button>
+            <img class="row-dice" id="row1-img-2" src="images/dice-2-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-3"></button>
+            <img class="row-dice" id="row1-img-3" src="images/dice-3-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-4"></button>
+            <img class="row-dice" id="row1-img-4" src="images/dice-4-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-5"></button>
+            <img class="row-dice" id="row1-img-5" src="images/dice-5-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row1-b-6"></button>
+            <img class="row-dice" id="row1-img-6" src="images/dice-6-640px.png" />
+          </div>
+        </div>
+        <hr>
+        <div class="row" id="row2">
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-1"></button>
+            <img class="row-dice" id="row2-img-1" src="images/dice-1-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-2"></button>
+            <img class="row-dice" id="row2-img-2" src="images/dice-2-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-3"></button>
+            <img class="row-dice" id="row2-img-3" src="images/dice-3-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-4"></button>
+            <img class="row-dice" id="row2-img-4" src="images/dice-4-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-5"></button>
+            <img class="row-dice" id="row2-img-5" src="images/dice-5-640px.png" />
+          </div>
+          <div class="row-dice">
+            <button class="row-dice" id="row2-b-6"></button>
+            <img class="row-dice" id="row2-img-6" src="images/dice-6-640px.png" />
+          </div>
+        </div>
+        <p id="row2-score">0</p>
+        <hr>
+        <h5 class=legend-header>Combinations:</h5>
+        <div class="sub-wrapper-legend">
+          <p class="legend">Farkle = 0      </p>
+          <p class="legend">1 = 100  </p>
+          <p class="legend">1-1-1 = 1000</p>
+          <p class="legend">5 = 50    </p>
+          <p class="legend">2-2-2 = 200  </p>
+          <p class="legend">Four-of-a-kind = 1000</p>
+          <p class="legend">3-3-3 = 300  </p>
+          <p class="legend">Five-of-a-kind = 2000</p>
+          <p class="legend">4-4-4 = 400  </p>
+          <p class="legend">Six-of-a-kind = 3000</p>
+          <p class="legend">5-5-5 = 500  </p>
+          <p class="legend">Straight = 1500</p>
+          <p class="legend">6-6-6 = 600  </p>
+          <p class="legend">Three pairs = 1500</p>
+          <p class="legend">Two triplets = 2500</p>
+          <p class="legend">Four-of-a-kind+pair = 1500</p>
+        </div>
+      </div>
+
+      <!-- Play Area -->
+      <div class="box play-area">
+        <p id="play-text">Click the roll button to start!</p>
+        <p id="notifications"> </p>
+        <div class="wrapper-play-dice">
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-1"></button>
+            <img class="play-dice" id="die1" src="images/dice-1-640px.png" />
+          </div>
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-2"></button>
+            <img class="play-dice" id="die2" src="images/dice-2-640px.png" />
+          </div>
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-3"></button>
+            <img class="play-dice" id="die3" src="images/dice-3-640px.png" />
+          </div>
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-4"></button>
+            <img class="play-dice" id="die4" src="images/dice-4-640px.png" />
+          </div>
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-5"></button>
+            <img class="play-dice" id="die5" src="images/dice-5-640px.png" />
+          </div>
+          <div class="play-dice">
+            <button class="play-dice" id="play-b-6"></button>
+            <img class="play-dice" id="die6" src="images/dice-6-640px.png" />
+          </div>
+        </div>
+      </div>
+
+      <div class="box rules">
+        <h1>Farkle Instructions</h1>
+        <hr>
+        <ul class="rules-list">
+          <li><strong>Summary:</strong> Farkle is a dice game where you weigh your odds and try to get more points than the other players. This website is designed to be played "hot-seat" locally with your friends!</li>
+          <li><strong>Objective:</strong> Be the first player to get 10,000 points.</li>
+          <li><strong>On your turn:</strong> Start by clicking the roll button to roll the dice.</li>
+          <ul>
+            <li>Dice score points depending on what combinations they make.</li>
+            <li>You may set aside dice that are a part of combinations by clicking on them.</li>
+            <li>Only dice that were rolled together can be a part of the same combination.</li>
+            <li>When you have dice set aside, you may either roll again with the remaining dice to improve your score or you can "bank" your score to end your turn and add the score this turn to your total score.</li>
+            <li>You must set aside at least one die to bank or roll again.</li>
+            <li>If you roll and there are no combinations, you "farkled". Your turn ends and you lose all your points for this turn.</li>
+          </ul>
+          <li><strong>Hot Dice:</strong> After you roll, if all remaining dice are part of a combination, you may continue rolling with six dice.</li>
+          <li><strong>Roll Previous:</strong> If the player before you banked their score, you have the option to start your turn with the score they banked and with the dice they had remaining.</li>
+          <li><strong>Last chance:</strong> After the first person reaches 10,000 points and banks their score, each other player has one turn to try and end the game with the highest score.</li>
+        </ul>
+      </div>
+      <!-- Hints -->
+    </div> <!--end wrapper2-->
+
+  </body>
+</html>

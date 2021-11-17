@@ -1,0 +1,246 @@
+/*The two rulesets below set all stlyes to alternative box sizing*/
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  background-color: #414141;
+}
+
+.box {
+  /* background-color: ghostwhite; */
+  background-color: #bdbdbd;
+  border: 5px solid #5283c5;
+  border-radius: 10px;
+}
+
+div.wrapper {
+  height: 200px;
+  display: inline-flex;
+}
+
+div.wrapper2 {
+  display: flex;
+}
+
+.score-card {
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.currently-playing {
+  border: 5px solid gold;
+}
+
+.removeButton,
+.add-button {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 2em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #ffffff;
+  background-color: #5283c5;
+  text-align: center;
+  transition: all 0.2s;
+}
+.removeButton:hover {
+  background-color: #4095c6;
+}
+
+.name {
+  width: 180px;
+  background-color: inherit;
+  border: none;
+  border-bottom: 2px dashed blue;
+  font-size: 18px;
+  text-align: center;
+}
+
+#add-card img {
+  width: 170px;
+  height: 170px;
+}
+
+.panel {
+  display: block;
+  margin-top: 50px;
+  margin-left: 10px;
+  width: 375px;
+  height: 600px;
+  /*background-color: #bdbdbd;
+  border: 5px solid #5283c5;
+  border-radius: 10px;*/
+}
+
+.panel p {
+  font-size: 15px;
+  height: 5px;
+  text-align: center;
+  padding: none;
+  margin: none;
+}
+
+.panel button {
+  display: inline-block;
+  font-size: 20px;
+  margin-top: 15px;
+  padding: 10px;
+}
+
+.panel > button {
+  width: 40%;
+  margin-left: 30%;
+}
+
+.panel .sub-wrapper {
+  display: grid;
+  margin-left: 10%;
+  grid-template-columns: 40% 40%;
+  gap: 10%;
+}
+
+.panel h5.legend-header {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.panel .sub-wrapper-legend {
+  display: grid;
+  margin-left: 0%;
+  grid-template-columns: 40% 55%;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.panel .sub-wrapper-legend p.legend {
+  text-align: right;
+  padding-right: 10px;
+  margin-top: 5px;
+  white-space: pre;
+}
+
+.panel .row {
+  display: inline-block;
+  height: 60px;
+}
+
+div.row-dice {
+  display: inline-block;
+}
+
+img.row-dice {
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 6px;
+  margin-left: 5px;
+}
+
+button.row-dice {
+  position: absolute;
+  background-color: transparent;
+  width: 50px;
+  height: 50px;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+  transform: translateY(-15px);
+}
+
+.sidebar-button,
+.sidebar-button2 {
+  color: white;
+  background-color: #bd5a4a;
+}
+
+.sidebar-button:hover {
+  background-color: #395a83;
+}
+
+.sidebar-button2:hover {
+  background-color: #395a83;
+}
+
+.play-area {
+  display: inline;
+  margin-top: 50px;
+  margin-left: 10px;
+  width: calc(
+    100% - 1050px
+  ); /*1050px is about the width of the panel and the rules plus their padding*/
+  min-width: 500px;
+  padding: 50px;
+  padding-top: 20px;
+  padding-right: 10px;
+}
+
+#notifications {
+  min-height: 1.2em;
+}
+
+.alert {
+  background: linear-gradient(90deg, rgba(255,218,0,1) 0%, rgba(189,189,189,1) 90%);
+  border-radius: 3px;
+}
+
+div.wrapper-play-dice {
+  height: 115px;
+  /*display: inline;*/
+}
+
+.play-area div.play-dice {
+  display: inline-block;
+}
+
+.play-area img.play-dice {
+  width: 75px;
+  height: 75px;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  margin-right: 50px;
+  margin-bottom: 20px;
+}
+
+.play-area button.play-dice {
+  position: absolute;
+  background-color: transparent;
+  width: 75px;
+  height: 75px;
+  border: none;
+  cursor: pointer;
+  transform: translateY(20px);
+}
+
+.rules {
+  margin-top: 50px;
+  margin-left: 10px;
+  width: 600px;
+  min-width: 600px;
+  padding: 30px;
+  padding-top: 20px;
+}
+
+ul.rules-list {
+  list-style: none;
+  padding: 0;
+}
+
+ul.rules-list li {
+  padding-bottom: 3px;
+}
