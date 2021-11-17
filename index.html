@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <title>Farkle</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Mobile/i.test(navigator.userAgent)) {
+          // Take the user to a different screen here.
+          window.location.href = "mobile.html";
+      }
+    </script>
     <script src="scripts/main.js" defer></script>
   </head>
   <body>
