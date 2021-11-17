@@ -238,6 +238,14 @@ bankB.addEventListener('click', () => {
     return;
   }
 
+  //if player set aside dice that doesn't make a valid combination then stop function
+  for (let i = 0; i < nDiceRow2; i++) {
+    if (!isValid(diceRow2, diceRow2[i])) {
+      alert("One or more of your dice set aside doesn't make an allowed combination");
+      return;
+    }
+  }
+
   turnScore += getTotalScore(checkScore(diceRow2));
 
   //==========================================================================
