@@ -1,21 +1,27 @@
 const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 6;
+const WINNING_THRESHOLD = 100;  // Number of points required to win the game
+let FINAL_ROUND = false;
+let first_player_to_threshold = null;
 
+
+// *****************************************************************************
+//                          CREATE SCORE CARDS
+//
+//  Scorecards will store the player's name, their current score, and a button
+//  to remove this player from the game.
+//
+//  Note: We use input.user-score-num to hold the numerical score value and
+//        span.user-score to render the value to the screen.
+// *****************************************************************************
 const inactiveScoreCards = [];
-const scoreCardContainer = document.querySelector("div.score-card-container");   // Reference to scorecard container
+const scoreCardContainer = document.querySelector("div.score-card-container");
 
-// Initialize scorecards for the start of the game
-// - Creates a DOM Element to hold the scorecard
-// - Adds HTML to score a player's name, score, and a remove button
-// - Adds Event listeners to the remove button
 for (let i = 0; i < MAX_PLAYERS; ++i) {
     // Create a new Element for this score card
     let scoreCard = document.createElement("div");
     scoreCard.classList.add("box");
-    scoreCard.classList.add("score-card");
-
-    // Scorecards will store the player's name, their current score, and a button
-    // to remove this player from the game
+    scoreCard.classList.add("score-card");    
     scoreCard.innerHTML = `
         <input type="text" class="name" maxlength="20" placeholder="Enter Player Name">
         <div>
@@ -25,8 +31,6 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
         <input type="number" class="user-score-num">
         <button class="removeButton">Remove Player</button>
     `;
-
-    // Use the input .user-score-num to store this player's score
     score = scoreCard.querySelector(".user-score-num");
     score.value = 0;
     score.hidden = true;
@@ -34,12 +38,13 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     // Add an event listener to the remove button
     const scoreCardRemoveButton = scoreCard.querySelector("button.removeButton");
     scoreCardRemoveButton.addEventListener("click", () => {
-        if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS) {
+        // Only remove cards if we have more than the min number of players and it is not the final round
+        if (inactiveScoreCards.length < MAX_PLAYERS - MIN_PLAYERS && !FINAL_ROUND) {
             if (inactiveScoreCards.length == 0) {
               addButtonContainer.style.display = "flex";
             }
 
-            // If we are removing the active card, set the active card to the next card
+            // If we are removing the currently plaing card, set the currently playing card to the next card
             if (scoreCard === currentlyPlaying) {
                 changeTurn();
             }
@@ -62,13 +67,16 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
         inactiveScoreCards.push(scoreCard);
     }
 }
+// *****************************************************************************
+//                       END - CREATE SCORE CARDS
+// *****************************************************************************
 
 // Create event listener for add button to add new players
 const addButton = document.querySelector(".add-button");
 const addButtonContainer = document.querySelector("#add-card");
 addButton.addEventListener("click", () => {
-    // Add an inactive card to the DOM if one exists
-    if (inactiveScoreCards.length > 0) {
+    // Add an inactive card to the DOM if one exists and it is not the final round
+    if (inactiveScoreCards.length > 0 && !FINAL_ROUND) {
       if (inactiveScoreCards.length == 1) {
         addButtonContainer.style.display = "none";
       }
@@ -81,9 +89,15 @@ addButton.addEventListener("click", () => {
 let currentlyPlaying = scoreCardContainer.firstElementChild;
 currentlyPlaying.classList.add("currently-playing");
 
-// Updates the currentlyPlaying reference to the next scorecard element
-// in the scorecard container (or wraps around to the beginning)
+
+// Function: changeTurn
+// ---------------------
+// Changes the score card that is currently playing to
+// the next one in the scoreCardContainer.
+// Returns a flag to signal if the game should be over or not
 const changeTurn = () => {
+    let endGame = false;
+
     // Get the element who will be playing next turn
     let nextPlayer = currentlyPlaying.nextElementSibling;
     nextPlayer = nextPlayer != null ? nextPlayer : scoreCardContainer.firstElementChild;
@@ -92,17 +106,136 @@ const changeTurn = () => {
     currentlyPlaying.classList.remove("currently-playing");
     nextPlayer.classList.add("currently-playing");
 
-    // Update currently playing to reference the next player
     currentlyPlaying = nextPlayer;
+
+    // If we have completed the final round, end the game
+    if (FINAL_ROUND && nextPlayer == first_player_to_threshold) {
+      endGame = true;
+    }
+
+    return endGame;
 };
 
+// Function: gameOver
+// ---------------------
+// Ends the game by displaying a pop-up window with final scores in descending order.
+// A reset button is displayed that can be used to reset the scores.
+const gameOver = () => {
+  // Get an array containing each score card's name and score in an object
+  let finalScoreCards = scoreCardContainer.children;
+  let finalCardsInfo = [];
+  for (let i = 0; i < finalScoreCards.length; ++i) {
+    let cardName = finalScoreCards[i].querySelector(".name").value;
+    let cardScore = finalScoreCards[i].querySelector(".user-score-num").valueAsNumber;
+
+    finalCardsInfo.push({
+      name: cardName,
+      score: cardScore
+    });
+  }
+
+  // Sort card info by final scores descending
+  finalCardsInfo.sort((a, b) => (a.score > b.score) ? -1 : 1);
+
+  // Add divs to the pop-up window containing each player's name and final scores
+  let finalScoreContainer = document.querySelector("#final-scores");
+  for (let i = 0; i < finalCardsInfo.length; ++i) {
+    let finalScoreCard = document.createElement("div");
+    finalScoreCard.classList.add("final-score");
+
+    finalScoreCard.innerHTML = `
+        ${i+1}. ${finalCardsInfo[i].name} - ${finalCardsInfo[i].score}
+    `;
+
+    finalScoreContainer.appendChild(finalScoreCard);
+  }
+
+  // Add event listener to the restart button
+  document.querySelector("#restart").addEventListener('click', () => {
+    resetGame(finalScoreCards, finalScoreContainer);
+  });
+
+  // Disable buttons
+  rollB.disabled = true;
+  rollPrevB.disabled = true;
+  bankB.disabled = true;
+
+  // Display game over window
+  document.querySelector(".main-page").style.opacity = "0.5";
+  document.querySelector("#game-over").style.display = "block";
+};
+
+// Function: updateScore
+// ---------------------
+// params: pointsScored - An integer containing the points scored by the player this round.
+//
+// Adds the points scored during the round to the current player's total.
 const updateScore = (pointsScored) => {
-    // Add to the current player's score
+  // Add to the current player's score
   let newScore = currentlyPlaying.querySelector(".user-score-num").valueAsNumber + pointsScored;
   currentlyPlaying.querySelector(".user-score-num").valueAsNumber = newScore;
 
   // Render the player's new score
   currentlyPlaying.querySelector(".user-score").innerText = newScore;
+
+  // If this player is the first to reach the winning threshold, we initiate the final round
+  if (newScore >= WINNING_THRESHOLD && first_player_to_threshold == null) {
+    initFinalRound(currentlyPlaying);
+  }
+};
+
+// Function: initFinalRound
+// ---------------------
+// params: currentlyPlaying - A reference to the HTML Element of the currently playing score card
+//
+// Marks the current player as first player to reach the winning threshold. Once we return to this player
+// again, the game is over. We set the final round flag to true to signal we are in the last round.
+const initFinalRound = (currentlyPlaying) => {
+  first_player_to_threshold = currentlyPlaying;
+  FINAL_ROUND = true;
+  first_player_to_threshold.classList.add("first-player-to-threshold");
+  let finalRoundNote = document.createElement("div");
+  finalRoundNote.innerHTML = `${first_player_to_threshold.querySelector(".name").value} has reached the objective score!<br>
+                              This is the final round!`;
+  document.querySelector("div.play-area").prepend(finalRoundNote);
+};
+
+// Function: resetGame
+// ---------------------
+// params: finalScoreCards - references to the score cards in play when the game ended
+//
+// Resets the game to its initial state.
+const resetGame = (finalScoreCards, finalScoreCardContainer) => {
+  // Reset scores to 0
+  for (let i = 0; i < finalScoreCards.length; ++i) {
+    finalScoreCards[i].querySelector("span.user-score").innerText = 0;
+    finalScoreCards[i].querySelector(".user-score-num").value = 0;
+  }
+
+  // Set the first scorecard to the one currently playing
+  let firstPlayer = finalScoreCards[0];
+  currentlyPlaying.classList.remove("currently-playing");
+  firstPlayer.classList.add("currently-playing");
+  currentlyPlaying = firstPlayer;
+
+  // Reset final round info
+  FINAL_ROUND = false;
+  first_player_to_threshold.classList.remove("first-player-to-threshold");
+  first_player_to_threshold = null;
+  let finalRoundNote = document.querySelector("div.play-area");
+  finalRoundNote.removeChild(finalRoundNote.firstChild);
+
+  // Reset the play area
+  initPlayArea();
+
+  // Stop displaying the game over pop-up window
+  document.querySelector(".main-page").style.opacity = "1";
+  document.querySelector("#game-over").style.display = "none";
+
+  // Remove final scores
+  while (finalScoreCardContainer.firstElementChild) {
+    finalScoreCardContainer.removeChild(finalScoreCardContainer.firstElementChild);
+  }
 };
 
 const timeLimit = 2500; //Animation time in ms
@@ -164,17 +297,6 @@ const row2BArray = [document.getElementById("row2-b-1"),
   document.getElementById("row2-b-5"),
   document.getElementById("row2-b-6")];
 
-//Hide all images and buttons in rows on webpage load
-for (let i = 0; i < 6; i++) {
-  row1Array[i].hidden = true;
-  row1BArray[i].hidden = true;
-  row2Array[i].hidden = true;
-  row2BArray[i].hidden = true;
-}
-
-rollPrevB.disabled = true; //disable roll prev. button at start of game
-//rollPrevB.style.color = '#bd5a4a';
-
 //create variables to track turn
 let dicePlay = [1,2,3,4,5,6]; //Dice in play
 let nDicePlay = 6;// number of dice in play
@@ -187,22 +309,62 @@ let originalRoll = [1,2,3,4,5,6]; //original roll for reference purposes does no
 let turnScore = 0;
 let startOfTurn = true; //this boolean tracks if this is the first roll of the turn or not.
 
+// Function: resetPlayAreaVariables
+// ---------------------
+// Sets play area variables back to their initial states
+const resetPlayAreaVariables = () => {
+  dicePlay = [1,2,3,4,5,6];
+  nDicePlay = 6;
+  diceRow1 = [0,0,0,0,0,0];
+  nDiceRow1 = 0;
+  diceRow2 = [0,0,0,0,0,0];
+  nDiceRow2 = 0;
+  prevDice = [0,0,0,0,0,0];
+  originalRoll = [1,2,3,4,5,6];
+  turnScore = 0;
+};
+
+// Function: initPlayArea
+// ---------------------
+// Sets up the play area to its initial state before players begin rolling.
+const initPlayArea = () => {
+  //Hide all images and buttons in rows on webpage load
+  for (let i = 0; i < 6; i++) {
+    row1Array[i].hidden = true;
+    row1BArray[i].hidden = true;
+    row2Array[i].hidden = true;
+    row2BArray[i].hidden = true;
+  }
+
+  rollPrevB.disabled = true; //disable roll prev. button at start of game
+
+  resetPlayAreaVariables();
+
+  startOfTurn = true;
+
+  playText.textContent = "Click the roll button to start!";
+  alert();
+  roundScore.textContent = "Previous score: 0";
+  row2Score.textContent = "0";
+
+  // Set up buttons
+  rollB.disabled = false;
+  rollPrevB.disabled = true;
+  bankB.disabled = false;
+
+  diceBArray.forEach(element => element.hidden = false);
+  diceArray.forEach(element => element.hidden = false);
+};
+
+initPlayArea();
+
 // Event listener and handler for clicking roll button
 rollB.addEventListener('click', () => {
   alert(); //reset notifications
 
   if (startOfTurn) {
     startOfTurn = false;
-    //reset variables
-    dicePlay = [1,2,3,4,5,6];
-    nDicePlay = 6;
-    diceRow1 = [0,0,0,0,0,0];
-    nDiceRow1 = 0;
-    diceRow2 = [0,0,0,0,0,0];
-    nDiceRow2 = 0;
-    prevDice = [0,0,0,0,0,0];
-    originalRoll = [1,2,3,4,5,6];
-    turnScore = 0;
+    resetPlayAreaVariables();
     updateDicePlay(dicePlay);
     updateDiceRow1(diceRow1);
     updateDiceRow2(diceRow2);
@@ -253,12 +415,11 @@ bankB.addEventListener('click', () => {
   //==========================================================================
   updateScore(turnScore);
 
-  changeTurn();
+  let endGame = changeTurn();
 
   alert("Click [Roll] to start fresh or click [Roll prev.] to roll with remaining dice and previous player's score");
 
   rollPrevB.disabled = false;
-  //rollPrevB.style.color = white;
 
   startOfTurn = true;
 
@@ -272,6 +433,10 @@ bankB.addEventListener('click', () => {
   updateDiceRow2(diceRow2);
 
   roundScore.textContent = "Previous score: " + turnScore;
+
+  if (endGame) {
+    gameOver();
+  }
 });
 
 diceBArray[0].addEventListener('click', () => {playBClick(0);});
@@ -385,6 +550,7 @@ function initiateDiceRolling() {
         } else if (i+1 == nDicePlay) {
           //Show this message if all dice are allowed to be scored.
           alert("Hot dice! You may continue rolling after you set aside the remaining dice.");
+          bankB.disabled = true;
         }
       }
     },(timeLimit + interval));

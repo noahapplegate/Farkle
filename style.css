@@ -12,6 +12,10 @@ body {
   background-color: #414141;
 }
 
+.main-page {
+  opacity: 1;
+}
+
 .box {
   /* background-color: ghostwhite; */
   background-color: #bdbdbd;
@@ -194,7 +198,11 @@ button.row-dice {
 }
 
 .alert {
-  background: linear-gradient(90deg, rgba(255,218,0,1) 0%, rgba(189,189,189,1) 90%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 218, 0, 1) 0%,
+    rgba(189, 189, 189, 1) 90%
+  );
   border-radius: 3px;
 }
 
@@ -243,4 +251,44 @@ ul.rules-list {
 
 ul.rules-list li {
   padding-bottom: 3px;
+}
+
+.first-player-to-threshold {
+  border: 5px solid crimson;
+}
+
+#game-over {
+  display: none;
+  position: absolute;
+  top: 35%;
+  left: 35%;
+  text-align: center;
+}
+
+#final-scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+}
+
+.final-score {
+  flex-basis: 30px;
+}
+
+#restart {
+  margin-bottom: 20px;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+#game-over {
+  animation: appear 550ms ease-in 1;
+  max-width: 500px;
 }
