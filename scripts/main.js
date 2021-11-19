@@ -1,6 +1,6 @@
 const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 6;
-const WINNING_THRESHOLD = 100;  // Number of points required to win the game
+const WINNING_THRESHOLD = 10000;  // Number of points required to win the game
 let FINAL_ROUND = false;
 let first_player_to_threshold = null;
 
