@@ -534,8 +534,11 @@ function initiateDiceRolling() {
       //=================================
       //Code that changes to next player
       //=================================
-      changeTurn();
+      let endGame = changeTurn();
       playText.textContent = farkleString;
+      if (endGame) {
+        gameOver();
+      }
     },(timeLimit + interval));
   } else {
     playText.textContent = resultsString;
