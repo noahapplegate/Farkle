@@ -21,7 +21,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
     // Create a new Element for this score card
     let scoreCard = document.createElement("div");
     scoreCard.classList.add("box");
-    scoreCard.classList.add("score-card");    
+    scoreCard.classList.add("score-card");
     scoreCard.innerHTML = `
         <input type="text" class="name" maxlength="20" placeholder="Enter Player Name">
         <div>
@@ -553,7 +553,6 @@ function initiateDiceRolling() {
         } else if (i+1 == nDicePlay) {
           //Show this message if all dice are allowed to be scored.
           alert("Hot dice! You may continue rolling after you set aside the remaining dice.");
-          bankB.disabled = true;
         }
       }
     },(timeLimit + interval));
