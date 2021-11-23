@@ -10,10 +10,6 @@ This web app is designed by Noah and Tim. This is both our first fully functiona
 
 While the web app is functional we still intend to add other small features and styling.
 
-### Notes
-
-Still need to add winning condition.
-
 ### Try out the website
 
 https://noahapplegate.github.io/Farkle/
