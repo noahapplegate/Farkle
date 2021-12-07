@@ -26,6 +26,7 @@ div.wrapper {
 
 div.wrapper2 {
   display: flex;
+  width: 100%;
 }
 
 .score-card {
@@ -146,8 +147,8 @@ div.row-dice {
 img.row-dice {
   width: 50px;
   height: 50px;
-  background-color: white;
-  border-radius: 6px;
+  /*background-color: white;
+  border-radius: 6px;*/
   margin-left: 5px;
 }
 
@@ -177,20 +178,20 @@ button.row-dice {
 }
 
 .play-area {
-  display: inline;
+  /*display: inline-flex;*/
   margin-top: 50px;
   margin-left: 10px;
-  width: calc(
-    100% - 1050px
-  ); /*1050px is about the width of the panel and the rules plus their padding*/
+  width: 97%;
   min-width: 500px;
   padding: 50px;
   padding-top: 20px;
   padding-right: 10px;
+
+  font-size: 0.7em;
 }
 
 #notifications {
-  min-height: 1.2em;
+  min-height: 7em;
 }
 
 .alert {
@@ -210,8 +211,8 @@ div.wrapper-play-dice {
 .play-area img.play-dice {
   width: 75px;
   height: 75px;
-  background-color: white;
-  border-radius: 10px;
+  /*background-color: white;
+  border-radius: 10px;*/
   margin-top: 20px;
   margin-right: 50px;
   margin-bottom: 20px;
@@ -230,7 +231,7 @@ div.wrapper-play-dice {
 .rules {
   margin-top: 50px;
   margin-left: 10px;
-  width: 600px;
+  width: 97%;
   min-width: 600px;
   padding: 30px;
   padding-top: 20px;
