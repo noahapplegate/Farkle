@@ -26,6 +26,7 @@ for (let i = 0; i < MAX_PLAYERS; ++i) {
         <input type="text" class="name" maxlength="20" placeholder="Enter Player Name">
         <div>
           <span>Score:</span>
+          <br>
           <span class="user-score">0</span>
         </div>
         <input type="number" class="user-score-num">
