@@ -137,7 +137,7 @@ h5.legend-header {
 
 .panel .row {
   display: inline-block;
-  min-height: 5vw;
+  min-height: 6vw;
 }
 
 div#row2.row {
@@ -192,8 +192,7 @@ button.row-dice {
   margin-left: 10px;
   margin-right: 10px;
   min-width: 500px;
-  padding: 50px;
-  padding-top: 20px;
+  padding: 20px;
   padding-right: 10px;
 
   font-size: 0.7em;
@@ -215,26 +214,27 @@ div.wrapper-play-dice {
 
 .play-area div.play-dice {
   display: inline-block;
+  margin-top: 20px;
+  margin-right: 2vw;
+  margin-bottom: 2vw;
 }
 
 .play-area img.play-dice {
-  width: 75px;
-  height: 75px;
+  width: 12vw;
+  height: 12vw;
   /*background-color: white;
   border-radius: 10px;*/
-  margin-top: 20px;
-  margin-right: 50px;
-  margin-bottom: 20px;
+
 }
 
 .play-area button.play-dice {
   position: absolute;
   background-color: transparent;
-  width: 75px;
-  height: 75px;
+  width: 12vw;
+  height: 12vw;
   border: none;
   cursor: pointer;
-  transform: translateY(20px);
+  /*transform: translateY(20px);*/
 }
 
 .rules {
