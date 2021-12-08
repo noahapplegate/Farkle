@@ -78,18 +78,16 @@ div.wrapper2 {
 
 .panel {
   display: block;
-  margin-top: 50px;
+  margin-top: 5%;
   margin-left: 10px;
-  width: 375px;
-  height: 600px;
-  /*background-color: #bdbdbd;
-  border: 5px solid #5283c5;
-  border-radius: 10px;*/
+  margin-right: 10px;
+  width: 50%;
+  /*height: 600px;*/
 }
 
 .panel p {
-  font-size: 15px;
-  height: 5px;
+  font-size: 1.8em;
+  height: 0.5em;
   text-align: center;
   padding: none;
   margin: none;
@@ -97,30 +95,31 @@ div.wrapper2 {
 
 .panel button {
   display: inline-block;
-  font-size: 20px;
-  margin-top: 15px;
+  font-size: 4em;
+  margin-top: 5%;
+  margin-bottom: 5%;
   padding: 10px;
 }
 
 .panel > button {
-  width: 40%;
-  margin-left: 30%;
+  width: 80%;
+  margin-left: 10%;
 }
 
-.panel .sub-wrapper {
+/*.panel .sub-wrapper {
   display: grid;
   margin-left: 10%;
   grid-template-columns: 40% 40%;
   gap: 10%;
-}
+}*/
 
-.panel h5.legend-header {
+h5.legend-header {
   text-align: center;
   margin: 0;
   padding: 0;
 }
 
-.panel .sub-wrapper-legend {
+.sub-wrapper-legend {
   display: grid;
   margin-left: 0%;
   grid-template-columns: 40% 55%;
@@ -128,39 +127,49 @@ div.wrapper2 {
   grid-row-gap: 0px;
 }
 
-.panel .sub-wrapper-legend p.legend {
+.sub-wrapper-legend p.legend {
+  font-size: 2em;
   text-align: right;
   padding-right: 10px;
-  margin-top: 5px;
+  margin-top: -5%;
   white-space: pre;
 }
 
 .panel .row {
   display: inline-block;
-  height: 60px;
+  min-height: 5vw;
+}
+
+div#row2.row {
+  min-height: 22vw;
 }
 
 div.row-dice {
   display: inline-block;
+  margin-left: 5px;
+  width: 5vw;
+}
+
+#row2 div.row-dice {
+  width: 10vw;
 }
 
 img.row-dice {
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
   /*background-color: white;
   border-radius: 6px;*/
-  margin-left: 5px;
 }
 
 button.row-dice {
   position: absolute;
   background-color: transparent;
-  width: 50px;
-  height: 50px;
+  width: 10vw;
+  height: 10vw;
   border: none;
   cursor: pointer;
-  margin-left: 5px;
-  transform: translateY(-15px);
+  /*margin-left: 5px;*/
+  transform: translateY(-5vw);
 }
 
 .sidebar-button,
@@ -179,9 +188,9 @@ button.row-dice {
 
 .play-area {
   /*display: inline-flex;*/
-  margin-top: 50px;
+  margin-top: 20px;
   margin-left: 10px;
-  width: 97%;
+  margin-right: 10px;
   min-width: 500px;
   padding: 50px;
   padding-top: 20px;
@@ -200,7 +209,7 @@ button.row-dice {
 }
 
 div.wrapper-play-dice {
-  height: 115px;
+  min-height: 20vw;
   /*display: inline;*/
 }
 
@@ -229,9 +238,9 @@ div.wrapper-play-dice {
 }
 
 .rules {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-left: 10px;
-  width: 97%;
+  margin-right: 10px;
   min-width: 600px;
   padding: 30px;
   padding-top: 20px;
